@@ -74,43 +74,43 @@
     .veil     { top: 34vh;  top: 34dvh;  height: 11vh; height: 11dvh; }
     .sheet-wrap { top: 42vh; top: 42dvh; }
 
-    /* Mapa escuro — leaflet container e atribuição discreta */
-    #map { background: #0c0f12; touch-action: pan-x pan-y; }
+    /* Mapa claro — fundo pergaminho e atribuição discreta */
+    #map { background: #e7d8bf; touch-action: pan-x pan-y; }
     .leaflet-container { font-family: 'Inter', sans-serif; }
     .leaflet-control-attribution {
-      background: rgba(12,15,18,.55) !important;
-      color: #65727e !important; font-size: 9px !important;
+      background: rgba(247,238,224,.7) !important;
+      color: #7a6748 !important; font-size: 9px !important;
       backdrop-filter: blur(6px);
     }
-    .leaflet-control-attribution a { color: #9aa6b1 !important; }
+    .leaflet-control-attribution a { color: #5c4a2e !important; }
     .leaflet-control-zoom { display: none; }
 
-    /* Tiles: clareadas e com mais contraste para legibilidade no escuro */
-    .leaflet-tile { filter: brightness(1.18) contrast(1.32) saturate(.82); }
+    /* Tiles claras (Positron) viradas para um tom quente amarelo-cobre/âmbar */
+    .leaflet-tile { filter: sepia(.92) saturate(1.5) hue-rotate(-20deg) brightness(.98) contrast(.97); }
 
     /* ===== Pins customizados ===== */
     .pin { position: relative; display:flex; align-items:center; justify-content:center; }
     .pin-dot {
       border-radius: 9999px; transition: all .35s cubic-bezier(.4,0,.2,1);
-      border: 1px solid rgba(238,242,244,.35); box-shadow: 0 2px 10px rgba(0,0,0,.5);
+      border: 1.5px solid rgba(255,250,242,.9); box-shadow: 0 1px 6px rgba(60,40,15,.55);
     }
-    /* periférico: pequeno e discreto */
-    .pin-peripheral .pin-dot { width: 9px; height: 9px; background: #65727e; }
+    /* periférico: pequeno e discreto (escuro p/ contraste no mapa claro) */
+    .pin-peripheral .pin-dot { width: 10px; height: 10px; background: #4a3f30; }
     /* foco: maior, acento esmeralda + anel */
-    .pin-focus .pin-dot { width: 15px; height: 15px; background: #3a9c84; border-color: rgba(238,242,244,.7); }
+    .pin-focus .pin-dot { width: 15px; height: 15px; background: #155446; }
     .pin-focus::after {
       content:''; position:absolute; width:30px; height:30px; border-radius:9999px;
-      border:1px solid rgba(58,156,132,.45);
+      border:1.5px solid rgba(21,84,70,.55);
     }
     /* gastronomia: acento bordô */
-    .pin-food .pin-dot { width: 13px; height: 13px; background: #a8404f; }
-    /* base (Palazzo Alfeo): dourado, losango */
-    .pin-base .pin-dot { width: 14px; height: 14px; background: #c9a86a; border-radius: 3px; transform: rotate(45deg); }
+    .pin-food .pin-dot { width: 14px; height: 14px; background: #8c2230; }
+    /* base (Palazzo Alfeo): cobre escuro, losango */
+    .pin-base .pin-dot { width: 15px; height: 15px; background: #9a6b27; border-radius: 3px; transform: rotate(45deg); }
 
     /* pin ativo (sincronizado com a timeline) */
-    .pin-active .pin-dot { transform: scale(1.7); box-shadow: 0 0 0 6px rgba(58,156,132,.18), 0 4px 16px rgba(0,0,0,.6); }
+    .pin-active .pin-dot { transform: scale(1.7); box-shadow: 0 0 0 5px rgba(21,84,70,.22), 0 3px 12px rgba(60,40,15,.5); }
     .pin-active.pin-base .pin-dot { transform: rotate(45deg) scale(1.6); }
-    .pin-active::after { width:46px; height:46px; border-color: rgba(58,156,132,.6); }
+    .pin-active::after { width:46px; height:46px; border-color: rgba(21,84,70,.75); }
 
     /* ===== Fade-in no scroll (lazy reveal) ===== */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
@@ -156,11 +156,11 @@
   <!-- A. MAPA FIXO (metade superior / background)                   -->
   <!-- ============================================================= -->
   <header class="fixed top-0 inset-x-0 z-30 pointer-events-none">
-    <div class="px-5 pt-[calc(env(safe-area-inset-top)+1rem)] pb-10
-                bg-gradient-to-b from-charcoal/90 via-charcoal/40 to-transparent">
-      <p class="text-[10px] tracking-[0.45em] text-faint uppercase">Sicília · Siracusa</p>
-      <h1 class="font-serif text-2xl text-ice mt-1 leading-none">Ortigia</h1>
-      <p class="text-[11px] text-mute mt-1.5 tracking-wide">Um dia · 09h30 → Pôr do sol · 39 paragens</p>
+    <div class="px-5 pt-[calc(env(safe-area-inset-top)+1rem)] pb-14
+                bg-gradient-to-b from-charcoal via-charcoal/75 to-transparent">
+      <p class="text-[10px] tracking-[0.45em] text-ice/60 uppercase">Sicília · Siracusa</p>
+      <h1 class="font-serif text-2xl text-ice mt-1 leading-none drop-shadow-[0_1px_8px_rgba(0,0,0,.6)]">Ortigia</h1>
+      <p class="text-[11px] text-ice/75 mt-1.5 tracking-wide">Um dia · 09h30 → Pôr do sol · 39 paragens</p>
     </div>
   </header>
 
@@ -938,7 +938,7 @@
               attributionControl: true, scrollWheelZoom: false,
               touchZoom: true, doubleClickZoom: true, tapTolerance: 18, bounceAtZoomLimits: false
             });
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
               attribution: '© OpenStreetMap · © CARTO', maxZoom: 20, subdomains: 'abcd'
             }).addTo(this.map);
 
