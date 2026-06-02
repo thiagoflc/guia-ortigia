@@ -467,9 +467,9 @@
   <!-- ============================================================= -->
   <script>
     /* =========================================================================
-       BANCO DE DADOS — Pontos do Ato I e Ato II (10 paragens)
-       Estrutura pronta para escalar aos 39 pontos.
+       BANCO DE DADOS — Itinerário de Ortigia (39 paragens, 5 atos · 09h30–pôr do sol)
        tipo: 'base' | 'foco' | 'peripheral' | 'food'
+       Imagens reais (Wikimedia Commons); links de rota abrem no Google Maps.
        ========================================================================= */
     const DB = {
       centro: [37.0592, 15.2930],
@@ -948,7 +948,7 @@
 
             // ajusta o enquadramento aos pontos
             const group = L.featureGroup(Object.values(this.markers));
-            this.map.fitBounds(group.getBounds().pad(0.25));
+            this.map.fitBounds(group.getBounds().pad(0.25), { animate: !this.prefersReducedMotion() });
             setTimeout(() => this.map.invalidateSize(), 200);
 
             this.setActive(this.allPontos[0].id, false);
