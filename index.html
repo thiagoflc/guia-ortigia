@@ -130,6 +130,11 @@
       *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
       .reveal { opacity: 1 !important; transform: none !important; }
     }
+    /* Animações do modal via CSS (disparam a cada exibição; reduced-motion zera acima) */
+    @keyframes modalFade { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes modalUp { from { transform: translateY(40px); opacity: 0 } to { transform: none; opacity: 1 } }
+    .modal-backdrop { animation: modalFade .25s ease; }
+    .modal-panel { animation: modalUp .34s cubic-bezier(.2,.7,.2,1); }
   </style>
 </head>
 
@@ -143,7 +148,7 @@
                 bg-gradient-to-b from-charcoal via-charcoal/75 to-transparent">
       <p class="text-[0.625rem] tracking-[0.45em] text-ice/60 uppercase">Sicília · Siracusa</p>
       <h1 class="font-serif text-2xl text-ice mt-1 leading-none drop-shadow-[0_1px_8px_rgba(0,0,0,.6)]">Ortigia</h1>
-      <p class="text-[0.6875rem] text-ice/75 mt-1.5 tracking-wide">Um dia · 09h30 → Pôr do sol · 39 paragens</p>
+      <p class="text-[0.6875rem] text-ice/75 mt-1.5 tracking-wide">Um dia · 09h30 → Pôr do sol · 41 paragens</p>
     </div>
   </header>
 
@@ -211,9 +216,9 @@
                 :aria-label="p.hora + ' — ' + p.nome"
                 class="reveal relative pl-[52px] mb-4 cursor-pointer group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emeraldlt/70 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
                 data-reveal
-                @click="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)"
-                @keydown.enter.prevent="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)"
-                @keydown.space.prevent="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)">
+                @click="openModal(p)"
+                @keydown.enter.prevent="openModal(p)"
+                @keydown.space.prevent="openModal(p)">
 
                 <!-- marcador no eixo -->
                 <span class="absolute left-[30px] top-2.5 -translate-x-1/2 z-10">
@@ -309,7 +314,7 @@
             no <span class="text-gold not-italic">Palazzo Alfeo</span>.”
           </p>
           <p class="text-[0.6875rem] text-faint mt-6 leading-relaxed font-light border-t border-line/50 pt-5">
-            Itinerário completo — <span class="text-mute">39 paragens</span> em cinco atos, do despertar
+            Itinerário completo — <span class="text-mute">41 paragens</span> em cinco atos, do despertar
             do norte ao ouro do poente. Toque nos pontos de <span class="text-emeraldlt">foco</span> e nas
             <span class="text-bordeauxlt">pausas</span> para abrir os detalhes; role para que o mapa siga a jornada.
           </p>
@@ -322,25 +327,22 @@
             </summary>
             <p class="text-[0.6875rem] text-faint mt-4 leading-relaxed font-light">
               Todas as fotografias são reais e de licença livre, via <span class="text-mute">Wikimedia Commons</span>.
-              Os monumentos têm a imagem exata; nas paragens privadas (residência, bancas do mercado,
-              gelataria, aperitivo) — que não possuem foto de licença livre — usa-se uma fotografia real
-              do próprio local ou da categoria, jamais um placeholder.
+              Os 13 pontos de <span class="text-emeraldlt">foco</span> têm a imagem exata do monumento; os
+              demais POIs entram como paragens enxutas, com rota direta no Google Maps — jamais um placeholder.
             </p>
             <ul class="mt-4 space-y-1.5 text-[0.65625rem] text-faint font-light leading-snug">
+              <li>· <span class="text-mute">Antico Mercato</span> — Davide Mauro, CC BY-SA 4.0</li>
+              <li>· <span class="text-mute">Mercato di Ortigia</span> + <span class="text-mute">Fratelli Burgio</span> — Giovanni Dall'Orto, Attribution</li>
               <li>· <span class="text-mute">Tempio di Apollo</span> — Pymouss, CC BY-SA 4.0</li>
-              <li>· <span class="text-mute">Mercato di Ortigia</span> (3 fotos) — Giovanni Dall'Orto, Attribution</li>
+              <li>· <span class="text-mute">Fontana di Diana</span> — JC Collet, CC0</li>
+              <li>· <span class="text-mute">Palazzo Beneventano del Bosco</span> — Pymouss, CC BY-SA 4.0</li>
               <li>· <span class="text-mute">Duomo · fachada de Andrea Palma (1753)</span> — Giovanni Dall'Orto, Attribution</li>
-              <li>· <span class="text-mute">Miqwe (Bagno Ebraico)</span> — Derbrauni, CC BY 4.0</li>
               <li>· <span class="text-mute">Santa Lucia alla Badia</span> — Herbert Frank, CC BY 2.0</li>
-              <li>· <span class="text-mute">Chiesa di San Filippo Apostolo</span> — sailko, CC BY 2.5</li>
-              <li>· <span class="text-mute">Palazzo Bellomo</span> — trolvag, CC BY-SA 3.0</li>
+              <li>· <span class="text-mute">Bagno Ebraico (Miqweh)</span> — Derbrauni, CC BY 4.0</li>
+              <li>· <span class="text-mute">Fonte Aretusa</span> — Maurizio Formati, CC BY-SA 4.0</li>
+              <li>· <span class="text-mute">Galleria di Palazzo Bellomo</span> — trolvag, CC BY-SA 3.0</li>
               <li>· <span class="text-mute">Castello Maniace</span> — Misterchry82, CC BY-SA 4.0</li>
-              <li>· <span class="text-mute">Sette Scogli, Ortigia</span> (solarium) — Daniel Enchev, CC BY 2.0</li>
-              <li>· <span class="text-mute">Granita siciliana com brioche</span> — Giovanni.grasso, CC BY-SA 4.0</li>
-              <li>· <span class="text-mute">Aperol Spritz</span> — Geolina163, CC BY-SA 4.0</li>
-              <li>· <span class="text-mute">Porto Grande ao pôr do sol</span> — Fred Bigio, CC BY 2.0</li>
-              <li>· <span class="text-mute">Balcão florido de Ortigia</span> (base) — Stella, CC BY-SA 4.0</li>
-              <li>· <span class="text-mute">Fachada do Duomo à noite</span> (regresso) — Giovanni Dall'Orto, Attribution</li>
+              <li>· <span class="text-mute">Palazzo Alfeo</span> (base · balcão de Ortigia) — Stella, CC BY-SA 4.0</li>
             </ul>
           </details>
         </div>
@@ -361,27 +363,22 @@
   <!-- ============================================================= -->
   <!-- MODAL — Glassmorphism (sobe de baixo)                         -->
   <!-- ============================================================= -->
-  <div x-cloak x-show="modal.open" role="dialog" aria-modal="true" :aria-label="modal.p.nome" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+  <div x-cloak x-show="modal.open" x-trap.noscroll="modal.open" role="dialog" aria-modal="true" :aria-label="modal.p.nome" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
     <!-- backdrop -->
-    <div x-show="modal.open"
-         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         @click="closeModal()"
-         class="absolute inset-0 bg-charcoal/70 backdrop-blur-sm"></div>
+    <div x-show="modal.open" @click="closeModal()"
+         class="modal-backdrop absolute inset-0 bg-charcoal/70 backdrop-blur-sm"></div>
 
     <!-- painel -->
-    <div x-ref="panel" x-show="modal.open" x-trap.noscroll="modal.open" tabindex="-1"
-         x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-y-full sm:translate-y-6 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
-         x-transition:leave="transition ease-in duration-250" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="translate-y-full opacity-0"
-         class="glass relative w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl max-h-[92dvh] overflow-y-auto sheet
+    <div x-ref="panel" x-show="modal.open" tabindex="-1"
+         class="modal-panel glass relative w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl max-h-[92dvh] overflow-y-auto sheet
                 shadow-[0_-20px_80px_rgba(0,0,0,.7)]">
 
       <!-- imagem topo + zona de arrasto (deslize ↓ para fechar) -->
       <div @touchstart.passive="dragStart($event)" @touchmove.passive="dragMove($event)" @touchend="dragEnd()"
-           class="ph-img relative h-52 w-full overflow-hidden sm:rounded-t-3xl">
+           class="ph-img relative w-full overflow-hidden sm:rounded-t-3xl" :class="modal.p.img ? 'h-52' : 'h-24'">
         <!-- alça de arrasto -->
         <div class="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-ice/50 z-20 sm:hidden"></div>
-        <img :src="modal.p.img" :alt="modal.p.nome + ' — ' + modal.p.linha" class="h-full w-full object-cover"
+        <img x-show="modal.p.img" :src="modal.p.img" :alt="modal.p.nome + ' — ' + modal.p.linha" class="h-full w-full object-cover"
              @load="$el.classList.add('loaded')" x-effect="modal.open && $el.classList.remove('loaded')" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#161c23] via-transparent to-charcoal/30"></div>
         <button @click="closeModal()" aria-label="Fechar"
@@ -398,7 +395,7 @@
 
       <div class="px-5 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] space-y-6">
         <!-- meta rápida -->
-        <div class="grid grid-cols-3 gap-3">
+        <div x-show="modal.p.horarioIdeal" class="grid grid-cols-3 gap-3">
           <div class="rounded-xl bg-ink/60 border border-line/50 p-3">
             <p class="text-[0.5625rem] tracking-widest uppercase text-faint">Horário ideal</p>
             <p class="text-[0.8125rem] text-ice mt-1 font-medium" x-text="modal.p.horarioIdeal"></p>
@@ -420,13 +417,13 @@
         </div>
 
         <!-- resumo histórico -->
-        <div class="border-l-2 border-emerald/50 pl-4">
+        <div x-show="modal.p.historia" class="border-l-2 border-emerald/50 pl-4">
           <p class="text-[0.625rem] tracking-[0.3em] uppercase text-faint mb-2">Resumo histórico</p>
           <p class="text-[0.875rem] text-mute leading-relaxed font-light" x-text="modal.p.historia"></p>
         </div>
 
         <!-- insights -->
-        <div>
+        <div x-show="modal.p.insights && modal.p.insights.length">
           <p class="text-[0.625rem] tracking-[0.3em] uppercase text-gold mb-3">Insights curiosos</p>
           <ul class="space-y-2.5">
             <template x-for="ins in modal.p.insights" :key="ins">
@@ -467,391 +464,379 @@
   <!-- ============================================================= -->
   <script>
     /* =========================================================================
-       BANCO DE DADOS — Itinerário de Ortigia (39 paragens, 5 atos · 09h30–pôr do sol)
+       BANCO DE DADOS — Itinerário de Ortigia (41 paragens, 5 atos · 09h30–pôr do sol)
        tipo: 'base' | 'foco' | 'peripheral' | 'food'
        Imagens reais (Wikimedia Commons); links de rota abrem no Google Maps.
        ========================================================================= */
     const DB = {
       centro: [37.0596, 15.2938],
       atos: [
-        /* ===================== ATO I ===================== */
         {
           id: "ato-1",
           faixa: "09h30 — 11h15",
-          titulo: "Ato I · O Despertar do Norte",
+          titulo: "Ato I · Norte · Entrada & Mercado",
           pontos: [
             {
-              id: "palazzo-alfeo", tipo: "base", nome: "Palazzo Alfeo",
-              ato: "Ponto de Partida", hora: "09h30", coord: [37.057, 15.2925],
-              linha: "Residência discreta de pedra calcária — o ponto de partida e de regresso da jornada.",
+              id: "palazzo-alfeo", tipo: "base", nome: "Palazzo Alfeo", ato: "Ponto de Partida", hora: "09h30", coord: [37.057, 15.2925],
+              linha: "Residência discreta em pedra calcária — o ponto de partida e de regresso da jornada.",
               img: "https://commons.wikimedia.org/wiki/Special:FilePath/Balcone%20fiorito.jpg?width=900",
-              custo: "", duracao: "—", horarioIdeal: "Saída cedo, 09h30",
-              descricao: "Um palazzo restaurado no coração de Ortigia, de fachada sóbria em pietra di Siracusa. Serve de âncora ao itinerário: tudo começa e termina aqui, a poucos passos do mar.",
-              historia: "Os palazzi nobres de Ortigia foram erguidos sobre fundações que misturam camadas gregas, romanas e barrocas. Após o terramoto de 1693, a ilha foi largamente reconstruída em estilo barroco siciliano.",
+              custo: "",
+              duracao: "—",
+              horarioIdeal: "Saída cedo",
+              descricao: "Residência discreta no coração de Ortigia, âncora do itinerário: tudo começa e termina aqui, a poucos passos do mar.",
+              historia: "Os palazzi nobres assentam sobre camadas gregas, romanas e barrocas; a ilha foi reconstruída em barroco após o terramoto de 1693.",
               insights: [
-                "A pedra dourada local muda de tom conforme a luz — fria de manhã, mel ao entardecer.",
-                "Guarde energia: o regresso ao pôr do sol é a pé, pelo mesmo eixo."
+                "A pedra dourada muda de tom conforme a luz.",
+                "A ilha percorre-se inteira a pé.",
+                "Tudo começa e termina aqui."
               ]
             },
             {
-              id: "ponte-umbertino", tipo: "peripheral", nome: "Ponte Umbertino",
-              ato: "Ato I", hora: "09h35", coord: [37.0647, 15.2911],
-              linha: "A ponte que une Ortigia ao continente — o limiar entre a cidade moderna e a ilha antiga."
+              id: "antico-mercato", tipo: "foco", nome: "Antico Mercato di Ortigia", ato: "Ato I · Norte · Entrada & Mercado", hora: "09h45", coord: [37.0644, 15.2933],
+              linha: "Antigo mercado coberto de 1900, em ferro e pedra, hoje espaço cultural e de eventos.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Antico%20mercato%20%28Siracusa%29%2001.jpg?width=900",
+              custo: "Gratuito",
+              duracao: "15 min",
+              horarioIdeal: "Manhã",
+              descricao: "O Antico Mercato é o antigo mercado coberto de Ortigia, edifício do início do séc. XX reconvertido em polo cultural, junto ao Tempio di Apollo.",
+              historia: "Construído em 1900 (projeto de Rosario Carta), substituiu as bancas ao ar livre; desativado a meio do século e restaurado como espaço de eventos.",
+              insights: [
+                "Fica à entrada da ilha, ao lado do Tempio di Apollo.",
+                "O mercado de rua vivo é hoje na vizinha Via De Benedictis.",
+                "Pátio interno usado para feiras e exposições."
+              ]
             },
             {
-              id: "tempio-apollo", tipo: "foco", nome: "Tempio di Apollo",
-              ato: "Ato I · O Despertar do Norte", hora: "09h45", coord: [37.0637, 15.293],
+              id: "mercato-ortigia", tipo: "foco", nome: "Mercato di Ortigia", ato: "Ato I · Norte · Entrada & Mercado", hora: "10h00", coord: [37.0642, 15.2931],
+              linha: "Mercado de rua vibrante — peixe-espada, especiarias, queijos e vozerio em dialeto.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/4551%20-%20Mercato%20di%20Ortigia%2C%20Siracusa%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2020%20marzo%202014.jpg?width=900",
+              custo: "Gratuito",
+              duracao: "40 min",
+              horarioIdeal: "Manhã, antes das 13h",
+              descricao: "O mercado de rua de Ortigia: peixe-espada e atum, especiarias, queijos, tomate seco e conservas, no coração sensorial da ilha.",
+              historia: "Ocupa o eixo comercial que serve a ilha desde a Antiguidade; a pescaria siracusana remonta às colónias gregas.",
+              insights: [
+                "Prove as degustações de azeites, queijos e conservas.",
+                "Fecha a meio da tarde — ritual matinal.",
+                "Antecâmara da pausa no Fratelli Burgio."
+              ]
+            },
+            {
+              id: "fratelli-burgio", tipo: "food", nome: "Fratelli Burgio", ato: "Pausa · Mercado", hora: "10h30", coord: [37.0645, 15.293],
+              linha: "Tábuas de salumi, queijos e conservas sicilianas com vinho, entre as bancas do mercado.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/4638%20-%20Mercato%20di%20Ortigia%2C%20Siracusa%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2020%20marzo%202014.jpg?width=900",
+              custo: "€€ · €20–40",
+              duracao: "1h",
+              horarioIdeal: "Final da manhã / almoço",
+              descricao: "Instituição do mercado: taglieri de salumi, queijos curados e conservas sicilianas, com um copo de vinho regional, sentado entre as bancas.",
+              historia: "A família Burgio elevou a salumeria a experiência gastronómica de referência em Ortigia.",
+              insights: [
+                "Peça a tábua mista com pistache de Bronte.",
+                "Chegue cedo: as poucas mesas enchem rápido.",
+                "Harmonize com um Nero d'Avola ou branco do Etna."
+              ]
+            },
+            {
+              id: "tempio-apollo", tipo: "foco", nome: "Tempio di Apollo", ato: "Ato I · Norte · Entrada & Mercado", hora: "10h50", coord: [37.0637, 15.293],
               linha: "O templo dórico mais antigo da Sicília, guardião da entrada da ilha.",
               img: "https://commons.wikimedia.org/wiki/Special:FilePath/Siracusa%20-%20Tempio%20di%20Apollo%2020240103-01.jpg?width=900",
-              custo: "Gratuito", duracao: "20 min", horarioIdeal: "Manhã, luz rasante de leste",
-              descricao: "Logo após a ponte que liga Ortigia ao continente, as colunas erodidas do Tempio di Apollo emergem abaixo do nível da rua, num recinto aberto que se observa do perímetro.",
-              historia: "Datado do início do século VI a.C., é considerado o templo dórico periptero mais antigo da Magna Grécia. Ao longo dos séculos foi templo grego, igreja bizantina, mesquita, igreja normanda e quartel espanhol — estratos sobrepostos da história mediterrânica.",
+              custo: "Gratuito",
+              duracao: "20 min",
+              horarioIdeal: "Manhã, luz de leste",
+              descricao: "As colunas dóricas erodidas do templo mais antigo da Sicília, num recinto rebaixado logo à entrada da ilha.",
+              historia: "Início do séc. VI a.C.; foi templo grego, igreja bizantina, mesquita, igreja normanda e quartel — estratos do Mediterrâneo.",
               insights: [
-                "Uma inscrição arcaica numa das colunas é uma das mais antigas dedicatórias dóricas conhecidas.",
-                "Por estar rebaixado, vê-se melhor de manhã, quando a sombra ainda não invade a cavidade.",
-                "Entrada pela ilha logo após o mercado — é o primeiro 'oi' de Ortigia."
+                "Uma inscrição arcaica é das mais antigas dedicatórias dóricas.",
+                "Vê-se melhor de manhã.",
+                "Limiar entre a Siracusa moderna e Ortigia."
               ]
             },
             {
-              id: "largo-xxv-luglio", tipo: "peripheral", nome: "Largo XXV Luglio",
-              ato: "Ato I", hora: "10h00", coord: [37.06379, 15.29241],
-              linha: "Pequena praça de chegada, com cafés e o primeiro enquadramento do templo grego."
+              id: "porta-urbica", tipo: "peripheral", nome: "Porta Urbica", ato: "Ato I · Norte · Entrada & Mercado", hora: "11h00", coord: [37.063, 15.2926],
+              linha: "Vestígios da antiga porta grega de acesso à ilha, junto ao Tempio di Apollo.",
+              descricao: "Vestígios da antiga porta grega de acesso à ilha, junto ao Tempio di Apollo."
             },
             {
-              id: "mercato-ortigia", tipo: "foco", nome: "Mercato di Ortigia",
-              ato: "Ato I · O Despertar do Norte", hora: "10h10", coord: [37.0642, 15.2931],
-              linha: "Mercado de rua vibrante — peixe, especiarias, frutas e vozes em dialeto.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/4551%20-%20Mercato%20di%20Ortigia%2C%20Siracusa%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2020%20marzo%202014.jpg?width=900",
-              custo: "Gratuito", duracao: "35 min", horarioIdeal: "Antes das 12h, no auge",
-              descricao: "Ao longo da Via Emanuele De Benedictis, o mercado matinal é o coração sensorial de Ortigia: tabuleiros de espadarte e atum, montanhas de tomate seco, alcaparras de Pantelleria, queijos e azeitonas.",
-              historia: "O mercado ocupa o mesmo eixo comercial que serve a ilha desde a Antiguidade. A tradição da pescaria siracusana remonta às colónias gregas, e o espadarte continua a ser o rei das bancas.",
-              insights: [
-                "Prove a degustação de azeites e pestos — os vendedores oferecem com generosidade.",
-                "É a antecâmara perfeita para a pausa gastronómica seguinte, no mercado.",
-                "Fecha a meio da tarde; é estritamente um ritual da manhã."
-              ]
+              id: "san-paolo", tipo: "peripheral", nome: "Chiesa di San Paolo", ato: "Ato I · Norte · Entrada & Mercado", hora: "11h05", coord: [37.0635, 15.2938],
+              linha: "Igreja barroca de fachada movimentada, dedicada ao apóstolo Paulo.",
+              descricao: "Igreja barroca de fachada movimentada, dedicada ao apóstolo Paulo."
             },
             {
-              id: "antico-mercato", tipo: "peripheral", nome: "Antico Mercato",
-              ato: "Ato I", hora: "10h40", coord: [37.0644, 15.2933],
-              linha: "O antigo mercado coberto, hoje espaço cultural — fachada de ferro e pedra."
+              id: "san-tommaso", tipo: "peripheral", nome: "Chiesa di San Tommaso", ato: "Ato I · Norte · Entrada & Mercado", hora: "11h10", coord: [37.0621, 15.2952],
+              linha: "Pequena igreja de origem normanda (séc. XII), das mais antigas de Ortigia.",
+              descricao: "Pequena igreja de origem normanda (séc. XII), das mais antigas de Ortigia."
             },
             {
-              id: "via-cavour", tipo: "peripheral", nome: "Via Cavour",
-              ato: "Ato I", hora: "11h00", coord: [37.06197, 15.29291],
-              linha: "Artéria de pedra entre palazzi barrocos — atravessar sem pressa, olhando para cima."
+              id: "madonna-carmine", tipo: "peripheral", nome: "Chiesa della Madonna del Carmine", ato: "Ato I · Norte · Entrada & Mercado", hora: "11h15", coord: [37.0617, 15.2965],
+              linha: "Igreja do Carmo, com convento carmelita anexo.",
+              descricao: "Igreja do Carmo, com convento carmelita anexo."
             }
           ]
         },
-
-        /* ===================== ATO II ===================== */
         {
           id: "ato-2",
-          faixa: "11h15 — 14h00",
-          titulo: "Ato II · Sabor & Pedra",
+          faixa: "11h15 — 12h45",
+          titulo: "Ato II · Marina & Praças",
           pontos: [
             {
-              id: "caseificio-borderi", tipo: "food", nome: "Caseificio Borderi",
-              ato: "Ato II · Sabor & Pedra", hora: "11h15", coord: [37.06435, 15.2932],
-              linha: "O panino mais famoso da Sicília — montado à mão, camada a camada, entre as bancas.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Pescespada%20al%20mercato%20di%20Ortigia%2C%20Siracusa%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2020%20marzo%202014.jpg?width=900",
-              custo: "€ · ~€10", duracao: "30 min", horarioIdeal: "Manhã — a fila forma-se cedo",
-              descricao: "Uma banca-lenda no mercado de Ortigia, onde a família Borderi monta sanduíches teatrais e descomunais — presunto, queijos frescos, tomate seco, pistache, mel e ervas — enquanto conversa com a fila.",
-              historia: "O Caseificio Borderi começou como laticínio familiar e tornou-se ponto de peregrinação gastronómica. O ritual da montagem do panino — quase uma performance — fez da banca uma das mais fotografadas de Itália.",
+              id: "porta-marina", tipo: "peripheral", nome: "Porta Marina", ato: "Ato II · Marina & Praças", hora: "11h25", coord: [37.0622, 15.2917],
+              linha: "Portão quatrocentista de entrada pelo mar, com brasão aragonês esculpido.",
+              descricao: "Portão quatrocentista de entrada pelo mar, com brasão aragonês esculpido."
+            },
+            {
+              id: "marina-foro", tipo: "peripheral", nome: "Marina e Foro Vittorio Emanuele II", ato: "Ato II · Marina & Praças", hora: "11h35", coord: [37.06, 15.292],
+              linha: "Passeio arborizado à beira do Porto Grande — fícus centenários e bancos virados ao mar.",
+              descricao: "Passeio arborizado à beira do Porto Grande — fícus centenários e bancos virados ao mar."
+            },
+            {
+              id: "santa-maria-miracoli", tipo: "peripheral", nome: "Chiesa di Santa Maria dei Miracoli", ato: "Ato II · Marina & Praças", hora: "11h45", coord: [37.0625, 15.2918],
+              linha: "Igreja medieval reconstruída em barroco, de portal gótico-catalão.",
+              descricao: "Igreja medieval reconstruída em barroco, de portal gótico-catalão."
+            },
+            {
+              id: "palazzo-greco", tipo: "peripheral", nome: "Palazzo Greco (Fondazione INDA)", ato: "Ato II · Marina & Praças", hora: "11h55", coord: [37.0615, 15.2945],
+              linha: "Palácio gótico do séc. XIV, sede da Fondazione INDA, do teatro clássico.",
+              descricao: "Palácio gótico do séc. XIV, sede da Fondazione INDA, do teatro clássico."
+            },
+            {
+              id: "palazzo-gargallo", tipo: "peripheral", nome: "Palazzo Gargallo", ato: "Ato II · Marina & Praças", hora: "12h05", coord: [37.0613, 15.295],
+              linha: "Palácio nobre de fachada barroca, nas ruelas medievais.",
+              descricao: "Palácio nobre de fachada barroca, nas ruelas medievais."
+            },
+            {
+              id: "palazzo-montalto", tipo: "peripheral", nome: "Palazzo Montalto", ato: "Ato II · Marina & Praças", hora: "12h15", coord: [37.0616, 15.2948],
+              linha: "Raro palácio de 1397, com janelas gótico-chiaramontanas — dos mais antigos da ilha.",
+              descricao: "Raro palácio de 1397, com janelas gótico-chiaramontanas — dos mais antigos da ilha."
+            },
+            {
+              id: "fontana-diana", tipo: "foco", nome: "Fontana di Diana (Piazza Archimede)", ato: "Ato II · Marina & Praças", hora: "12h25", coord: [37.061, 15.2941],
+              linha: "Fonte monumental liberty no centro da Piazza Archimede, celebrando o mito de Aretusa.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Piazza%20Archimede%20-%20Fontana%20di%20Diana%20%28Siracusa%2C%20Sicilia%29%20%28cropped%29.jpg?width=900",
+              custo: "Gratuito",
+              duracao: "10 min",
+              horarioIdeal: "Tarde",
+              descricao: "No centro da Piazza Archimede, a Fonte de Diana (1907) celebra o mito de Aretusa e Alfeu, com a deusa caçadora ao alto.",
+              historia: "Obra de Giulio Moschetti em estilo liberty, tornou-se o coração cénico da praça que leva o nome de Arquimedes.",
               insights: [
-                "Peça e espere: cada sanduíche é construído ao vivo, sem pressa.",
-                "Divida um — as porções são generosas o bastante para dois.",
-                "Chegue antes das 11h para evitar a fila que dobra a esquina."
+                "A praça segue o traçado medieval sobre a ágora antiga.",
+                "À noite a fonte é iluminada.",
+                "Repare nos tritões e cavalos marinhos."
               ]
             },
             {
-              id: "fratelli-burgio", tipo: "food", nome: "Fratelli Burgio",
-              ato: "Ato II · Sabor & Pedra", hora: "11h45", coord: [37.0645, 15.293],
-              linha: "Tavola gastronómica no mercado — tábuas de enchidos, queijos e vinho siciliano.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/4638%20-%20Mercato%20di%20Ortigia%2C%20Siracusa%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2020%20marzo%202014.jpg?width=900",
-              custo: "€€ · €25–40", duracao: "1h", horarioIdeal: "11h45 — antes da multidão do almoço",
-              descricao: "Instituição do mercado de Ortigia: uma loja-tavola onde se montam tábuas (taglieri) generosas de salumi, queijos curados, conservas e pão local, acompanhadas por um copo de vinho regional, sentado entre as bancas.",
-              historia: "A família Burgio transformou o ofício de salumeria numa experiência gastronómica de referência. É a parada clássica de quem percorre o mercado — o ponto onde o passeio se torna mesa.",
-              insights: [
-                "Peça a tábua mista com pistache de Bronte e tomate seco siciliano.",
-                "Chegue cedo: ao meio-dia as poucas mesas enchem-se rapidamente.",
-                "Harmonize com um Nero d'Avola ou um branco do Etna para fechar o Ato I."
-              ]
-            },
-            {
-              id: "piazza-archimede", tipo: "peripheral", nome: "Piazza Archimede",
-              ato: "Ato II", hora: "12h45", coord: [37.061, 15.2941],
-              linha: "Praça com a Fonte de Diana ao centro — pausa breve à sombra dos palazzi."
-            },
-            {
-              id: "via-maestranza", tipo: "peripheral", nome: "Via della Maestranza",
-              ato: "Ato II", hora: "13h00", coord: [37.06086, 15.29626],
-              linha: "A rua barroca mais nobre da ilha, ladeada de palácios e pátios floridos."
-            },
-            {
-              id: "duomo-siracusa", tipo: "foco", nome: "Duomo di Siracusa",
-              ato: "Ato II · Sabor & Pedra", hora: "13h10", coord: [37.0591, 15.2935],
-              linha: "Catedral barroca construída dentro de um templo grego de Atena.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/0602%20-%20Siracusa%20-%20Andrea%20Palma%2C%20Facciata%20del%20Duomo%20%281753%29%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2022%20May%202008.jpg?width=900",
-              custo: "€ · ~€2", duracao: "30 min", horarioIdeal: "Início da tarde, fachada iluminada",
-              descricao: "A Piazza del Duomo, palco barroco em pedra clara, culmina na catedral mais extraordinária da Sicília: uma igreja erguida literalmente dentro do antigo Templo de Atena — as colunas dóricas do século V a.C. continuam embutidas nas paredes.",
-              historia: "Templo grego dedicado a Atena, depois basílica bizantina, mesquita sob domínio árabe e, por fim, catedral cristã com fachada barroca de Andrea Palma (séc. XVIII). Poucos edifícios no mundo condensam tantas civilizações numa só estrutura.",
-              insights: [
-                "Observe as colunas dóricas estriadas presas às paredes laterais internas — são o templo original.",
-                "A fachada barroca brilha sob o sol do meio-dia; a praça inteira é de calcário branco.",
-                "Patrimônio Mundial da UNESCO desde 2005, junto com a necrópole de Pantalica."
-              ]
-            },
-            {
-              id: "palazzo-beneventano", tipo: "peripheral", nome: "Palazzo Beneventano del Bosco",
-              ato: "Ato II", hora: "13h35", coord: [37.0594, 15.2933],
-              linha: "Fachada barroca da Piazza Duomo — varandas de ferro forjado e pedra clara."
-            },
-            {
-              id: "bagno-ebraico", tipo: "foco", nome: "Bagno Ebraico (Miqwe)",
-              ato: "Ato II · Sabor & Pedra", hora: "13h45", coord: [37.0598, 15.2965],
-              linha: "Banho ritual judaico subterrâneo — o mais antigo da Europa.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Mikvah%20%28Syracuse%29%2003.jpg?width=900",
-              custo: "€€ · ~€5 (visita guiada)", duracao: "30 min", horarioIdeal: "Visita guiada, horário marcado",
-              descricao: "Sob o antigo bairro judaico da Giudecca, escavado a cerca de 18 metros de profundidade na rocha viva, encontra-se o miqwe — banho ritual de purificação — alimentado por água de nascente. Visita-se apenas com guia, descendo uma escadaria estreita.",
-              historia: "Datado do período bizantino (séculos VI–VII), é considerado o banho ritual hebraico mais antigo da Europa. Foi selado e esquecido aquando da expulsão dos judeus da Sicília em 1492, e redescoberto durante obras de restauro no século XX.",
-              insights: [
-                "A temperatura constante e o silêncio absoluto tornam a descida quase meditativa.",
-                "As visitas são limitadas e guiadas — vale reservar na receção do edifício acima.",
-                "Está no coração da Giudecca, o labirinto medieval mais íntimo de Ortigia."
-              ]
-            },
-            {
-              id: "fonte-aretusa", tipo: "peripheral", nome: "Fonte Aretusa",
-              ato: "Ato II", hora: "14h00", coord: [37.0579, 15.2927],
-              linha: "Nascente de água doce à beira-mar, com papiros — o mito de Aretusa, vislumbrado de passagem."
+              id: "arkimedeion", tipo: "peripheral", nome: "Museo Arkimedeion", ato: "Ato II · Marina & Praças", hora: "12h45", coord: [37.0608, 15.2943],
+              linha: "Museu interativo dedicado a Arquimedes, na Piazza Archimede.",
+              descricao: "Museu interativo dedicado a Arquimedes, na Piazza Archimede."
             }
           ]
         },
-
-        /* ===================== ATO III ===================== */
         {
           id: "ato-3",
-          faixa: "14h00 — 16h30",
-          titulo: "Ato III · Arte, Mito & Fortaleza",
+          faixa: "12h45 — 14h35",
+          titulo: "Ato III · Coração Barroco",
           pontos: [
             {
-              id: "santa-lucia-badia", tipo: "foco", nome: "Santa Lucia alla Badia",
-              ato: "Ato III · Arte, Mito & Fortaleza", hora: "14h15", coord: [37.0585, 15.2936],
+              id: "san-filippo-neri", tipo: "peripheral", nome: "Chiesa di San Filippo Neri", ato: "Ato III · Coração Barroco", hora: "12h55", coord: [37.0602, 15.2965],
+              linha: "Igreja barroca dos oratorianos de São Filipe Néri.",
+              descricao: "Igreja barroca dos oratorianos de São Filipe Néri."
+            },
+            {
+              id: "immacolata", tipo: "peripheral", nome: "Chiesa dell'Immacolata", ato: "Ato III · Coração Barroco", hora: "13h05", coord: [37.0598, 15.295],
+              linha: "Igreja barroca que guarda uma 'Madonna' de Domenico Gagini (séc. XV).",
+              descricao: "Igreja barroca que guarda uma 'Madonna' de Domenico Gagini (séc. XV)."
+            },
+            {
+              id: "palazzo-impellizzeri", tipo: "peripheral", nome: "Palazzo Impellizzeri", ato: "Ato III · Coração Barroco", hora: "13h10", coord: [37.0605, 15.2968],
+              linha: "Palácio oitocentista de grande fachada, na parte alta da Giudecca.",
+              descricao: "Palácio oitocentista de grande fachada, na parte alta da Giudecca."
+            },
+            {
+              id: "collegio-gesuiti", tipo: "peripheral", nome: "Chiesa del Collegio dei Gesuiti", ato: "Ato III · Coração Barroco", hora: "13h20", coord: [37.0595, 15.2928],
+              linha: "Imponente igreja-colégio jesuíta barroco, junto à zona do Duomo.",
+              descricao: "Imponente igreja-colégio jesuíta barroco, junto à zona do Duomo."
+            },
+            {
+              id: "siracusa-greca-3d", tipo: "peripheral", nome: "Siracusa Greca in 3D", ato: "Ato III · Coração Barroco", hora: "13h30", coord: [37.0592, 15.2925],
+              linha: "Experiência imersiva que reconstrói a Siracusa grega em 3D.",
+              descricao: "Experiência imersiva que reconstrói a Siracusa grega em 3D."
+            },
+            {
+              id: "palazzo-beneventano", tipo: "foco", nome: "Palazzo Beneventano del Bosco", ato: "Ato III · Coração Barroco", hora: "13h45", coord: [37.0594, 15.2933],
+              linha: "A fachada barroca mais célebre da Piazza Duomo — ferro forjado e pedra clara.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Siracusa%20-%20Palazzo%20Beneventano%20del%20Bosco%2020240103-01.jpg?width=900",
+              custo: "Exterior gratuito",
+              duracao: "10 min",
+              horarioIdeal: "Tarde, fachada ao sol",
+              descricao: "A fachada barroca mais célebre da Piazza Duomo, com varandas de ferro forjado e cantarias em pedra clara.",
+              historia: "Reformado no séc. XVIII por Luciano Alì; recebeu Fernando III e o almirante Nelson. Fecha cenicamente a praça da catedral.",
+              insights: [
+                "Forma com o Duomo o cenário mais fotografado de Ortigia.",
+                "Pátio e escadaria nobres no interior.",
+                "A pedra muda de tom com a luz."
+              ]
+            },
+            {
+              id: "palazzo-vermexio", tipo: "peripheral", nome: "Palazzo Vermexio (Municipio)", ato: "Ato III · Coração Barroco", hora: "14h00", coord: [37.0598, 15.2935],
+              linha: "Sede da Câmara Municipal, com colunas de um templo jónico embutidas no piso.",
+              descricao: "Sede da Câmara Municipal, com colunas de um templo jónico embutidas no piso."
+            },
+            {
+              id: "artemision", tipo: "peripheral", nome: "Artemision (Tempio Jonico)", ato: "Ato III · Coração Barroco", hora: "14h05", coord: [37.0599, 15.2936],
+              linha: "Fundações do templo jónico arcaico de Ártemis, visíveis sob o Município.",
+              descricao: "Fundações do templo jónico arcaico de Ártemis, visíveis sob o Município."
+            },
+            {
+              id: "duomo-siracusa", tipo: "foco", nome: "Duomo (Tempio di Minerva)", ato: "Ato III · Coração Barroco", hora: "14h10", coord: [37.0591, 15.2935],
+              linha: "Catedral barroca erguida dentro de um templo grego de Atena.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/0602%20-%20Siracusa%20-%20Andrea%20Palma%2C%20Facciata%20del%20Duomo%20%281753%29%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2022%20May%202008.jpg?width=900",
+              custo: "€ · ~€2",
+              duracao: "30 min",
+              horarioIdeal: "Início da tarde",
+              descricao: "A catedral erguida dentro do Templo de Atena (séc. V a.C.) — as colunas dóricas continuam embutidas nas paredes.",
+              historia: "Templo grego, basílica bizantina, mesquita e catedral barroca (fachada de Andrea Palma, 1753). Património Mundial UNESCO.",
+              insights: [
+                "Veja as colunas dóricas presas às paredes internas.",
+                "A praça inteira é de calcário branco.",
+                "UNESCO desde 2005."
+              ]
+            },
+            {
+              id: "ipogeo", tipo: "peripheral", nome: "Percorso Ipogeico di Piazza Duomo", ato: "Ato III · Coração Barroco", hora: "14h25", coord: [37.0595, 15.2932],
+              linha: "Galerias subterrâneas sob a Piazza Duomo — cisternas antigas e abrigos da guerra.",
+              descricao: "Galerias subterrâneas sob a Piazza Duomo — cisternas antigas e abrigos da guerra."
+            },
+            {
+              id: "santa-lucia-badia", tipo: "foco", nome: "Chiesa di Santa Lucia alla Badia", ato: "Ato III · Coração Barroco", hora: "14h35", coord: [37.0585, 15.2936],
               linha: "Igreja barroca que guarda 'O Enterro de Santa Lúcia', de Caravaggio.",
               img: "https://commons.wikimedia.org/wiki/Special:FilePath/Siracusa%2C%20Chiesa%20Santa%20Lucia%20alla%20Badia%20%281695-1707%29%2C%20Piazza%20Duomo.jpg?width=900",
-              custo: "Gratuito", duracao: "20 min", horarioIdeal: "Tarde, antes do fecho (≈19h)",
-              descricao: "Na Piazza Duomo, a fachada branca e curva de Santa Lucia alla Badia esconde um tesouro: a tela monumental que Caravaggio pintou em Siracusa em 1608, durante a sua fuga de Malta.",
-              historia: "Caravaggio chegou a Siracusa fugitivo e, em poucas semanas, pintou 'Il Seppellimento di Santa Lucia' para a cidade da padroeira. A composição quase vazia e os coveiros gigantes em primeiro plano marcam a sua fase final, crua e dramática.",
+              custo: "Gratuito",
+              duracao: "20 min",
+              horarioIdeal: "Tarde, antes do fecho",
+              descricao: "Igreja barroca da Piazza Duomo que guarda 'O Enterro de Santa Lúcia', tela que Caravaggio pintou em Siracusa em 1608.",
+              historia: "Caravaggio pintou-a em fuga de Malta, para a cidade da padroeira; obra crua e vazia da sua fase final.",
               insights: [
-                "Santa Lúcia, padroeira de Siracusa, nasceu aqui — a tela retrata o seu enterro.",
-                "A luz tenebrista de Caravaggio dialoga com a penumbra da igreja.",
-                "A entrada é gratuita, mas os horários são curtos e variáveis."
+                "Santa Lúcia, padroeira de Siracusa, nasceu aqui.",
+                "A luz tenebrista dialoga com a penumbra.",
+                "Entrada gratuita, horários curtos."
               ]
-            },
-            {
-              id: "hypogeum-duomo", tipo: "peripheral", nome: "Ipogeo di Piazza Duomo",
-              ato: "Ato III", hora: "14h45", coord: [37.0595, 15.2932],
-              linha: "Sob a praça, cisternas antigas e abrigos da guerra — um mundo escondido sob o mármore."
-            },
-            {
-              id: "via-giudecca", tipo: "peripheral", nome: "Via della Giudecca",
-              ato: "Ato III", hora: "15h00", coord: [37.05994, 15.29644],
-              linha: "O labirinto medieval do antigo bairro judaico, de becos estreitos e silenciosos."
-            },
-            {
-              id: "san-filippo", tipo: "foco", nome: "Chiesa di San Filippo Apostolo",
-              ato: "Ato III · Arte, Mito & Fortaleza", hora: "15h10", coord: [37.06025, 15.29669],
-              linha: "Igreja da Giudecca sobre catacumbas, banhos e abrigos subterrâneos.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Ortigia%2C%20chiesa%20di%20san%20filippo%20apostolo.JPG?width=900",
-              custo: "€€ · ~€5", duracao: "30 min", horarioIdeal: "Tarde, com visita guiada",
-              descricao: "No coração do antigo bairro judaico, a Chiesa di San Filippo Apostolo assenta sobre um dédalo subterrâneo: catacumbas paleocristãs, um miqwe, cisternas e abrigos antiaéreos da Segunda Guerra.",
-              historia: "Construída sobre uma antiga sinagoga após a expulsão dos judeus em 1492, a igreja acumula vinte séculos de história sob o pavimento. Os níveis inferiores serviram de refúgio durante os bombardeamentos de 1943.",
-              insights: [
-                "A descida atravessa épocas: grega, judaica, cristã e da guerra moderna.",
-                "Combina na perfeição com o Bagno Ebraico para entender a Giudecca.",
-                "Traga um casaco leve: lá em baixo é fresco o ano inteiro."
-              ]
-            },
-            {
-              id: "palazzo-bellomo", tipo: "foco", nome: "Galleria Regionale di Palazzo Bellomo",
-              ato: "Ato III · Arte, Mito & Fortaleza", hora: "15h35", coord: [37.0576, 15.2945],
-              linha: "Museu num palácio medieval — lar da 'Anunciação' de Antonello da Messina.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Palazzo%20Bellomo%20-%20Ingresso.jpg?width=900",
-              custo: "€€ · ~€8", duracao: "45 min", horarioIdeal: "Meio da tarde, salas calmas",
-              descricao: "A Galleria Regionale di Palazzo Bellomo ocupa um palácio do século XIII e reúne pintura e escultura sicilianas. A peça-mestra é a 'Annunciazione' (1474) de Antonello da Messina, gigante do Renascimento.",
-              historia: "O palazzo mistura base suábia e acréscimos catalães-góticos. A coleção salvou obras de igrejas destruídas pelo terramoto de 1693, e a 'Anunciação' de Antonello é estudada pela luz flamenga aplicada à serenidade italiana.",
-              insights: [
-                "Antonello introduziu a técnica do óleo flamengo na pintura italiana — repare na luz.",
-                "O pátio medieval do palácio é, por si só, uma obra de arte.",
-                "Costuma estar vazio à tarde — um respiro silencioso após o Duomo."
-              ]
-            },
-            {
-              id: "passeggio-adorno", tipo: "peripheral", nome: "Passeggio Adorno",
-              ato: "Ato III", hora: "16h00", coord: [37.06091, 15.29194],
-              linha: "Muralha-passeio à beira-mar, a caminho da fortaleza do sul."
-            },
-            {
-              id: "castello-maniace", tipo: "foco", nome: "Castello Maniace",
-              ato: "Ato III · Arte, Mito & Fortaleza", hora: "16h10", coord: [37.0538, 15.2937],
-              linha: "Fortaleza de Frederico II na ponta sul, cercada por mar nos três lados.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Castello%20Maniace%20Siracusa%20%28cropped%29.jpg?width=900",
-              custo: "€ · ~€4", duracao: "40 min", horarioIdeal: "Fim da tarde, brisa marinha",
-              descricao: "Na extremidade meridional de Ortigia, o Castello Maniace é uma fortaleza quadrada do século XIII mandada erguer por Frederico II Hohenstaufen, com um salão hipostilo e vistas de 270° sobre o Jónico.",
-              historia: "Erguido por volta de 1240 sobre um promontório onde o general bizantino Giorgio Maniakes desembarcou no século XI, o castelo foi residência real, prisão e quartel. O portal gótico e a sala das colunas são obras-primas da arquitetura suábia.",
-              insights: [
-                "O nome vem do general bizantino Maniakes, que reconquistou a área aos árabes.",
-                "As muralhas batidas pelo mar são o melhor lugar para sentir o vento jónico.",
-                "É a ponta mais a sul: daqui vê-se a baía inteira de Siracusa."
-              ]
-            },
-            {
-              id: "punta-lanterna", tipo: "peripheral", nome: "Punta della Lanterna",
-              ato: "Ato III", hora: "16h30", coord: [37.0545, 15.293],
-              linha: "A ponta junto ao farol, onde o porto encontra o mar aberto."
             }
           ]
         },
-
-        /* ===================== ATO IV ===================== */
         {
           id: "ato-4",
-          faixa: "16h30 — 18h45",
-          titulo: "Ato IV · Sereno & Mar",
+          faixa: "14h45 — 16h30",
+          titulo: "Ato IV · Giudecca & Museus",
           pontos: [
             {
-              id: "lungomare-levante", tipo: "peripheral", nome: "Lungomare di Levante",
-              ato: "Ato IV", hora: "16h45", coord: [37.06554, 15.29479],
-              linha: "A frente leste batida pelo Jónico — rochas, sal e horizonte limpo."
+              id: "san-giovannello", tipo: "peripheral", nome: "Chiesa di San Giovannello", ato: "Ato IV · Giudecca & Museus", hora: "14h50", coord: [37.0604, 15.2961],
+              linha: "Igreja medieval de São João, no labirinto da Giudecca.",
+              descricao: "Igreja medieval de São João, no labirinto da Giudecca."
             },
             {
-              id: "forte-vigliena", tipo: "peripheral", nome: "Forte Vigliena",
-              ato: "Ato IV", hora: "17h00", coord: [37.05953, 15.29846],
-              linha: "Bastião espanhol sobre o mar, vestígio das antigas defesas da ilha."
-            },
-            {
-              id: "belvedere-san-giacomo", tipo: "peripheral", nome: "Belvedere San Giacomo",
-              ato: "Ato IV", hora: "17h10", coord: [37.0601, 15.297],
-              linha: "Terraço sobre as rochas, parada para respirar o azul."
-            },
-            {
-              id: "cala-rossa", tipo: "foco", nome: "Solarium · Cala Rossa",
-              ato: "Ato IV · Sereno & Mar", hora: "17h20", coord: [37.0606, 15.2971],
-              linha: "Plataformas de rocha sobre o Jónico — o mergulho clássico de Ortigia.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/I%20Sette%20scogli%2C%20Ortigia%20%28Siracusa%29.jpg?width=900",
-              custo: "Gratuito", duracao: "45 min", horarioIdeal: "Tarde quente, água translúcida",
-              descricao: "Ao longo do Lungomare di Levante, escadas de ferro descem das rochas para um mar turquesa e fundo. É o solarium natural dos siracusanos: toalha na pedra, mergulho direto no azul.",
-              historia: "Sem praias de areia, Ortigia nada a partir das próprias muralhas e rochas. Estas plataformas são uma instituição estival, frequentadas por gerações de locais ao fim da tarde.",
+              id: "bagno-ebraico", tipo: "foco", nome: "Bagno Ebraico (Miqweh)", ato: "Ato IV · Giudecca & Museus", hora: "15h00", coord: [37.0598, 15.2965],
+              linha: "Banho ritual judaico subterrâneo — o mais antigo da Europa.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Mikvah%20%28Syracuse%29%2003.jpg?width=900",
+              custo: "€€ · ~€5",
+              duracao: "30 min",
+              horarioIdeal: "Visita guiada",
+              descricao: "O miqwe — banho ritual judaico — escavado ~18 m na rocha sob a Giudecca, alimentado por nascente.",
+              historia: "Período bizantino (séc. VI–VII), o mais antigo da Europa; selado na expulsão dos judeus em 1492 e redescoberto no séc. XX.",
               insights: [
-                "Leve sapatilhas de água — a entrada é por rocha, não por areia.",
-                "A luz da tarde deixa a água quase fosforescente.",
-                "Sem bilhetes nem cercas: é o luxo simples do mar aberto."
+                "Silêncio e temperatura constante na descida.",
+                "Visitas limitadas e guiadas.",
+                "Coração da Giudecca medieval."
               ]
             },
             {
-              id: "chiesa-san-martino", tipo: "peripheral", nome: "Chiesa di San Martino",
-              ato: "Ato IV", hora: "18h05", coord: [37.0583, 15.2941],
-              linha: "Uma das igrejas mais antigas de Ortigia, de origem paleocristã, quase escondida."
+              id: "museo-papiro", tipo: "peripheral", nome: "Museo del Papiro", ato: "Ato IV · Giudecca & Museus", hora: "15h30", coord: [37.058, 15.2955],
+              linha: "Museu do papiro, planta que cresce no vizinho rio Ciane.",
+              descricao: "Museu do papiro, planta que cresce no vizinho rio Ciane."
             },
             {
-              id: "gelateria-bianca", tipo: "food", nome: "Gelateria Bianca",
-              ato: "Ato IV · Sereno & Mar", hora: "18h20", coord: [37.0596, 15.2937],
-              linha: "Gelato artesanal siciliano — pistache de Bronte e amêndoa de Avola.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Granita%20ai%20gusti%20mandorla%20e%20cioccolato%20con%20brioche%20siciliana.jpg?width=900",
-              custo: "€ · ~€4", duracao: "20 min", horarioIdeal: "Meio da tarde, pausa doce",
-              descricao: "Uma gelateria de bairro onde o gelato é feito com matéria-prima siciliana: pistache verde de Bronte, amêndoas de Avola, limões e ricota. Textura densa, doçura contida.",
-              historia: "O gelato siciliano descende dos sorbetes árabes feitos com neve do Etna. A ilha permanece a capital espiritual do gelado em Itália, e o pistache de Bronte é o seu ouro verde.",
-              insights: [
-                "Prove a granita de amêndoa com brioche — o pequeno-almoço siciliano por excelência.",
-                "O pistache de Bronte tem D.O.P. e cor naturalmente discreta, nunca berrante.",
-                "Peça num cone de brioche para a versão local autêntica."
-              ]
+              id: "museo-cinema", tipo: "peripheral", nome: "Museo del Cinema", ato: "Ato IV · Giudecca & Museus", hora: "15h40", coord: [37.0584, 15.2948],
+              linha: "Pequeno museu dedicado à história do cinema, em Ortigia.",
+              descricao: "Pequeno museu dedicado à história do cinema, em Ortigia."
             },
             {
-              id: "via-roma", tipo: "peripheral", nome: "Via Roma",
-              ato: "Ato IV", hora: "18h35", coord: [37.06011, 15.29453],
-              linha: "Eixo reto que corta a ilha, pontuado de portões e pátios barrocos."
+              id: "museo-pupi", tipo: "peripheral", nome: "Museo Aretuseo dei Pupi", ato: "Ato IV · Giudecca & Museus", hora: "15h55", coord: [37.0589, 15.2951],
+              linha: "Museu dos pupi sicilianos — o teatro tradicional de marionetes.",
+              descricao: "Museu dos pupi sicilianos — o teatro tradicional de marionetes."
             },
             {
-              id: "marina-ortigia", tipo: "peripheral", nome: "Marina di Ortigia",
-              ato: "Ato IV", hora: "18h45", coord: [37.06206, 15.29145],
-              linha: "A doca dos veleiros, a oeste — mastros, reflexos e o vaivém do porto."
+              id: "teatro-comunale", tipo: "peripheral", nome: "Teatro Comunale", ato: "Ato IV · Giudecca & Museus", hora: "16h10", coord: [37.0601, 15.293],
+              linha: "Teatro municipal oitocentista, sala histórica de Siracusa.",
+              descricao: "Teatro municipal oitocentista, sala histórica de Siracusa."
+            },
+            {
+              id: "san-giuseppe", tipo: "peripheral", nome: "Chiesa di San Giuseppe", ato: "Ato IV · Giudecca & Museus", hora: "16h25", coord: [37.0587, 15.2945],
+              linha: "Igreja barroca de planta central, de fachada sóbria.",
+              descricao: "Igreja barroca de planta central, de fachada sóbria."
             }
           ]
         },
-
-        /* ===================== ATO V ===================== */
         {
           id: "ato-5",
-          faixa: "18h45 — Pôr do Sol",
-          titulo: "Ato V · O Ouro do Poente",
+          faixa: "16h30 — Pôr do Sol",
+          titulo: "Ato V · A Ponta Sul",
           pontos: [
             {
-              id: "porta-marina", tipo: "peripheral", nome: "Porta Marina",
-              ato: "Ato V", hora: "18h50", coord: [37.0622, 15.2917],
-              linha: "Portão quatrocentista de entrada pelo mar, com brasão aragonês esculpido."
-            },
-            {
-              id: "foro-vittorio", tipo: "peripheral", nome: "Foro Vittorio Emanuele II",
-              ato: "Ato V", hora: "19h00", coord: [37.06, 15.292],
-              linha: "Os jardins da Marina, com fícus centenários e bancos virados ao porto."
-            },
-            {
-              id: "lungomare-ponente", tipo: "peripheral", nome: "Lungomare di Ponente",
-              ato: "Ato V", hora: "19h20", coord: [37.0585, 15.2917],
-              linha: "O passeio oeste, onde a ilha se prepara para receber o poente."
-            },
-            {
-              id: "aperitivo", tipo: "food", nome: "Aperitivo al Tramonto",
-              ato: "Ato V · O Ouro do Poente", hora: "19h30", coord: [37.0595, 15.2924],
-              linha: "Aperitivo siciliano ao entardecer — Spritz, azeitonas e a pedra dourada ao redor.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Aperol%20Spritz%202014a.jpg?width=900",
-              custo: "€€ · €10–15", duracao: "45 min", horarioIdeal: "19h30 — a hora dourada",
-              descricao: "Num pátio ou numa esplanada virada ao poente, o ritual do aperitivo: um Spritz ou um vinho do Etna, petiscos sicilianos e o calor da pedra que devolve a luz do dia.",
-              historia: "O aperitivo, herança do norte de Itália adaptada ao sul, tornou-se o prelúdio social do jantar siciliano — sempre tardio, sempre prolongado.",
+              id: "fonte-aretusa", tipo: "foco", nome: "Fonte Aretusa", ato: "Ato V · A Ponta Sul", hora: "16h40", coord: [37.0579, 15.2927],
+              linha: "Nascente de água doce à beira-mar, com papiros — o mito de Aretusa.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Siracusa%20-%20La%20Fonte%20Aretusa%20con%20i%20suoi%20Papiri.jpg?width=900",
+              custo: "Gratuito",
+              duracao: "15 min",
+              horarioIdeal: "Fim da tarde",
+              descricao: "Nascente de água doce à beira-mar, com papiros que crescem espontaneamente — palco do mito da ninfa Aretusa.",
+              historia: "Segundo o mito, Aretusa virou fonte para escapar ao deus-rio Alfeu, que a perseguiu sob o mar desde a Grécia.",
               insights: [
-                "Experimente um branco do Etna (Carricante) em vez do Spritz habitual.",
-                "As esplanadas a oeste apanham o sol a cair sobre o Porto Grande.",
-                "É a transição perfeita entre o mar e o pôr do sol final."
+                "Um dos raros papiros selvagens da Europa.",
+                "Patos, peixes e mirante sobre o Porto Grande.",
+                "Cantada por Píndaro, Virgílio e Milton."
               ]
             },
             {
-              id: "belvedere-porto-grande", tipo: "foco", nome: "Belvedere sul Porto Grande",
-              ato: "Ato V · O Ouro do Poente", hora: "19h50", coord: [37.058, 15.2916],
-              linha: "O mirante do poente sobre o Porto Grande — o clímax dourado da jornada.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Porto%20di%20Siracusa%2C%20tramonto.jpg?width=900",
-              custo: "Gratuito", duracao: "30 min", horarioIdeal: "Pôr do sol (≈20h00 no verão)",
-              descricao: "Na margem ocidental de Ortigia, o passeio à beira-mar abre-se para o Porto Grande. Ao pôr do sol, a água e a pedra calcária incendeiam-se de laranja e ouro — o ponto alto sensorial do dia.",
-              historia: "O Porto Grande foi palco da decisiva derrota da frota ateniense em 413 a.C., relatada por Tucídides. Hoje, a mesma baía emoldura o espetáculo silencioso do sol a mergulhar no Mediterrâneo.",
+              id: "palazzo-bellomo", tipo: "foco", nome: "Galleria Regionale di Palazzo Bellomo", ato: "Ato V · A Ponta Sul", hora: "17h10", coord: [37.0576, 15.2945],
+              linha: "Museu num palácio medieval — lar da 'Anunciação' de Antonello da Messina.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Palazzo%20Bellomo%20-%20Ingresso.jpg?width=900",
+              custo: "€€ · ~€8",
+              duracao: "45 min",
+              horarioIdeal: "Meio da tarde",
+              descricao: "Museu num palácio sueco-medieval; peça-mestra a 'Anunciação' (1474) de Antonello da Messina.",
+              historia: "Base suábia e acréscimos catalães-góticos; a coleção salvou obras de igrejas destruídas pelo terramoto de 1693.",
               insights: [
-                "Chegue 20 minutos antes: a luz muda depressa nos minutos finais.",
-                "Olhe para trás — a pedra de Ortigia brilha tanto quanto o céu.",
-                "Foi nesta baía que Atenas perdeu a sua frota na Guerra do Peloponeso."
+                "A luz flamenga de Antonello na serenidade italiana.",
+                "O pátio medieval é, por si só, uma obra.",
+                "Costuma estar calmo à tarde."
               ]
             },
             {
-              id: "piazza-duomo-sera", tipo: "peripheral", nome: "Piazza Duomo (anoitecer)",
-              ato: "Ato V", hora: "20h20", coord: [37.05915, 15.29345],
-              linha: "A praça barroca iluminada ao anoitecer — mármore que brilha sob luz quente."
+              id: "san-martino", tipo: "peripheral", nome: "Chiesa di San Martino Vescovo", ato: "Ato V · A Ponta Sul", hora: "17h35", coord: [37.0583, 15.2941],
+              linha: "Uma das igrejas mais antigas da ilha, de origem paleocristã.",
+              descricao: "Uma das igrejas mais antigas da ilha, de origem paleocristã."
             },
             {
-              id: "via-landolina", tipo: "peripheral", nome: "Via Landolina",
-              ato: "Ato V", hora: "20h30", coord: [37.06059, 15.29319],
-              linha: "Ruela final rumo à base, entre fachadas que guardam o calor do dia."
+              id: "museo-mare", tipo: "peripheral", nome: "Museo del Mare", ato: "Ato V · A Ponta Sul", hora: "17h45", coord: [37.0575, 15.294],
+              linha: "Museu da tradição marítima e da pesca siracusana.",
+              descricao: "Museu da tradição marítima e da pesca siracusana."
             },
             {
-              id: "palazzo-alfeo-rientro", tipo: "base", nome: "Palazzo Alfeo · Regresso",
-              ato: "O Círculo Fecha-se", hora: "20h40", coord: [37.057, 15.2925],
-              linha: "O regresso. O círculo fecha-se onde começou, sob as primeiras luzes da noite.",
-              img: "https://commons.wikimedia.org/wiki/Special:FilePath/0123%20-%20Siracusa%20-%20Duomo%20-%20La%20facciata%2C%20di%20notte%20-%20Foto%20Giovanni%20Dall%27Orto%2C%2014-Oct-2008.jpg?width=900",
-              custo: "", duracao: "—", horarioIdeal: "Após o pôr do sol",
-              descricao: "De volta ao Palazzo Alfeo, com os pés cansados e a luz já azul. A jornada de um dia percorreu três mil anos de história num único quilómetro de pedra.",
-              historia: "Ortigia condensa, num espaço mínimo, gregos, romanos, bizantinos, árabes, normandos, suábios, espanhóis e o barroco. Terminar onde se começou é também medir a distância percorrida no tempo.",
+              id: "acquario", tipo: "peripheral", nome: "Acquario", ato: "Ato V · A Ponta Sul", hora: "17h55", coord: [37.0573, 15.2932],
+              linha: "Aquário de Ortigia, junto à Fonte Aretusa, com fauna do Mediterrâneo.",
+              descricao: "Aquário de Ortigia, junto à Fonte Aretusa, com fauna do Mediterrâneo."
+            },
+            {
+              id: "castello-maniace", tipo: "foco", nome: "Castello Maniace", ato: "Ato V · A Ponta Sul", hora: "18h20", coord: [37.0538, 15.2937],
+              linha: "Fortaleza de Frederico II na ponta sul, cercada por mar nos três lados.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Castello%20Maniace%20Siracusa%20%28cropped%29.jpg?width=900",
+              custo: "€ · ~€4",
+              duracao: "40 min",
+              horarioIdeal: "Fim da tarde, brisa",
+              descricao: "Fortaleza quadrada de Frederico II (c.1240) na ponta sul, cercada de mar nos três lados, com salão hipostilo.",
+              historia: "Erguida onde o general bizantino Maniakes desembarcou no séc. XI; residência real, prisão e quartel. Portal gótico suábio.",
               insights: [
-                "O mesmo eixo da manhã, agora em sentido inverso e sob outra luz.",
-                "Guarde a noite para um jantar tardio — a Sicília janta depois das 21h.",
-                "Amanhã, o que ficou por explorar continua à espera."
+                "O nome vem do general Maniakes.",
+                "As muralhas apanham o vento jónico.",
+                "Daqui vê-se a baía inteira de Siracusa."
               ]
             }
           ]
@@ -1027,6 +1012,8 @@
           this.modal.p = p; this.modal.open = true;
           if (this.$refs.sheet) this.$refs.sheet.style.overflow = 'hidden';  // congela o fundo
           this.focusPoint(p.id);
+          // garante a exibição do painel mesmo se a transição deixar display:none preso (1º clique)
+          this.$nextTick(() => { const pn = this.$refs.panel; if (pn) { pn.style.display = ''; pn.scrollTop = 0; } });
         },
         closeModal() {
           this.modal.open = false;
