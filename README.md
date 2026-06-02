@@ -16,12 +16,18 @@ Guia turístico interativo *single-page* (SPA) para uma jornada de um dia pela i
 
 HTML5 · Tailwind CSS (CDN) · Alpine.js · Leaflet — tudo em um único arquivo (`index.html`), sem build.
 
+## Ragusa · Dossiê de Operação Tática
+
+Segundo guia no mesmo padrão, em `ragusa.html`: uma operação de um dia por **Ragusa Ibla** e **Ragusa Superiore** (Val di Noto), lida como uma falha tectônica aberta pelo terramoto de 1693. **9 pontos nodais** em 5 atos (09h00 → pôr do sol), partindo e regressando ao *Giardino sul Duomo*. Mesma stack e interações do guia de Ortigia.
+
 ## Rodar localmente
 
-Basta abrir `index.html` no navegador, ou servir a pasta:
+Basta abrir `index.html` (Ortigia) ou `ragusa.html` (Ragusa) no navegador, ou servir a pasta:
 
 ```bash
 npx serve .
+# Ortigia → http://localhost:3000/
+# Ragusa  → http://localhost:3000/ragusa
 ```
 
 ## Créditos das imagens
