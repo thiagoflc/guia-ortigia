@@ -1,0 +1,5 @@
+# Ferramentas locais do Claude Code (preview)
+.claude/
+
+# SO
+.DS_Store
