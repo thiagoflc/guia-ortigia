@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Etna I · A Rota do Rifting e do Fogo</title>
+  <meta name="description" content="Guia interativo para a transição tectônica de Ragusa ao Etna — do Platô Ibleo calcário ao território vulcânico do Nerello Mascalese, via La Timpa e o Fronte Lavico de 1992." />
+
+  <!-- ===== Web-app no iPhone (homescreen, barra de status integrada) ===== -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Etna I" />
+  <meta name="theme-color" content="#0c0f12" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- ===== Tipografia ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- ===== Leaflet (mapa escuro, sem token) ===== -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- ===== Tailwind (pré-compilado, inline — sem runtime CDN) ===== -->
+  <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Inter,system-ui,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.inset-x-0{left:0;right:0}.bottom-0{bottom:0}.bottom-32{bottom:8rem}.bottom-4{bottom:1rem}.left-1\/2{left:50%}.left-3{left:.75rem}.left-5{left:1.25rem}.left-\[30px\]{left:30px}.left-\[34px\]{left:34px}.right-3\.5{right:.875rem}.right-4{right:1rem}.right-5{right:1.25rem}.top-0{top:0}.top-2\.5{top:.625rem}.top-3{top:.75rem}.top-3\.5{top:.875rem}.z-0{z-index:0}.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.z-40{z-index:40}.z-50{z-index:50}.-my-1{margin-top:-.25rem;margin-bottom:-.25rem}.-mt-3{margin-top:-.75rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.ml-2{margin-left:.5rem}.ml-\[15px\]{margin-left:15px}.mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-12{margin-top:3rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-9{margin-top:2.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-1{height:.25rem}.h-1\.5{height:.375rem}.h-11{height:2.75rem}.h-12{height:3rem}.h-2{height:.5rem}.h-3{height:.75rem}.h-3\.5{height:.875rem}.h-4{height:1rem}.h-40{height:10rem}.h-5{height:1.25rem}.h-52{height:13rem}.h-full{height:100%}.max-h-\[92dvh\]{max-height:92dvh}.min-h-\[44px\]{min-height:44px}.min-h-\[52px\]{min-height:52px}.w-1\.5{width:.375rem}.w-10{width:2.5rem}.w-11{width:2.75rem}.w-12{width:3rem}.w-2{width:.5rem}.w-3{width:.75rem}.w-3\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-\[52px\]{width:52px}.w-full{width:100%}.w-px{width:1px}.max-w-prose{max-width:65ch}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-x-1\/2{--tw-translate-x:-50%}.-translate-x-1\/2,.translate-y-0{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px}.translate-y-2{--tw-translate-y:0.5rem}.translate-y-2,.translate-y-full{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-full{--tw-translate-y:100%}.rotate-45{--tw-rotate:45deg}.rotate-45,.scale-150{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.scale-150{--tw-scale-x:1.5;--tw-scale-y:1.5}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.resize{resize:both}.list-none{list-style-type:none}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.flex-col{flex-direction:column}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.items-stretch{align-items:stretch}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.space-y-1\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-2\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.625rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.625rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overflow-x-hidden{overflow-x:hidden}.scroll-smooth{scroll-behavior:smooth}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-sm{border-radius:.125rem}.rounded-xl{border-radius:.75rem}.rounded-t-3xl{border-top-left-radius:1.5rem;border-top-right-radius:1.5rem}.rounded-t-\[28px\]{border-top-left-radius:28px;border-top-right-radius:28px}.border{border-width:1px}.border-l-2{border-left-width:2px}.border-t{border-top-width:1px}.border-bordeaux\/40{border-color:rgba(110,31,43,.4)}.border-bordeaux\/60{border-color:rgba(110,31,43,.6)}.border-emerald\/40{border-color:rgba(31,111,92,.4)}.border-emerald\/50{border-color:rgba(31,111,92,.5)}.border-emerald\/60{border-color:rgba(31,111,92,.6)}.border-emerald\/70{border-color:rgba(31,111,92,.7)}.border-gold\/40{border-color:hsla(39,47%,60%,.4)}.border-line{--tw-border-opacity:1;border-color:rgb(35 44 54/var(--tw-border-opacity,1))}.border-line\/50{border-color:rgba(35,44,54,.5)}.border-line\/60{border-color:rgba(35,44,54,.6)}.bg-bordeauxlt{--tw-bg-opacity:1;background-color:rgb(207 107 121/var(--tw-bg-opacity,1))}.bg-charcoal{--tw-bg-opacity:1;background-color:rgb(12 15 18/var(--tw-bg-opacity,1))}.bg-charcoal\/70{background-color:rgba(12,15,18,.7)}.bg-emeraldlt{--tw-bg-opacity:1;background-color:rgb(58 156 132/var(--tw-bg-opacity,1))}.bg-faint{--tw-bg-opacity:1;background-color:rgb(139 151 163/var(--tw-bg-opacity,1))}.bg-gold{--tw-bg-opacity:1;background-color:rgb(201 168 106/var(--tw-bg-opacity,1))}.bg-ice\/50{background-color:rgba(238,242,244,.5)}.bg-ink\/60{background-color:rgba(17,22,27,.6)}.bg-line{--tw-bg-opacity:1;background-color:rgb(35 44 54/var(--tw-bg-opacity,1))}.bg-slatecard{--tw-bg-opacity:1;background-color:rgb(22 28 35/var(--tw-bg-opacity,1))}.bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops))}.bg-gradient-to-t{background-image:linear-gradient(to top,var(--tw-gradient-stops))}.from-\[\#161c23\]{--tw-gradient-from:#161c23 var(--tw-gradient-from-position);--tw-gradient-to:rgba(22,28,35,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-charcoal{--tw-gradient-from:#0c0f12 var(--tw-gradient-from-position);--tw-gradient-to:rgba(12,15,18,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-slatecard{--tw-gradient-from:#161c23 var(--tw-gradient-from-position);--tw-gradient-to:rgba(22,28,35,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-transparent{--tw-gradient-from:transparent var(--tw-gradient-from-position);--tw-gradient-to:transparent var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-charcoal\/75{--tw-gradient-to:rgba(12,15,18,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),rgba(12,15,18,.75) var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-slatecard\/10{--tw-gradient-to:rgba(22,28,35,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),rgba(22,28,35,.1) var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-transparent{--tw-gradient-to:transparent var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),transparent var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-charcoal{--tw-gradient-to:#0c0f12 var(--tw-gradient-to-position)}.to-charcoal\/30{--tw-gradient-to:rgba(12,15,18,.3) var(--tw-gradient-to-position)}.to-transparent{--tw-gradient-to:transparent var(--tw-gradient-to-position)}.object-cover{-o-object-fit:cover;object-fit:cover}.p-3{padding:.75rem}.p-4{padding:1rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.pb-1{padding-bottom:.25rem}.pb-14{padding-bottom:3.5rem}.pb-2{padding-bottom:.5rem}.pb-\[calc\(1\.5rem\+env\(safe-area-inset-bottom\)\)\]{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}.pb-\[calc\(11rem\+env\(safe-area-inset-bottom\)\)\]{padding-bottom:calc(11rem + env(safe-area-inset-bottom))}.pl-4{padding-left:1rem}.pl-\[52px\]{padding-left:52px}.pr-2{padding-right:.5rem}.pt-3{padding-top:.75rem}.pt-4{padding-top:1rem}.pt-5{padding-top:1.25rem}.pt-6{padding-top:1.5rem}.pt-\[calc\(env\(safe-area-inset-top\)\+1rem\)\]{padding-top:calc(env(safe-area-inset-top) + 1rem)}.text-center{text-align:center}.font-sans{font-family:Inter,system-ui,sans-serif}.font-serif{font-family:Playfair Display,Georgia,serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[0\.5625rem\]{font-size:.5625rem}.text-\[0\.625rem\]{font-size:.625rem}.text-\[0\.65625rem\]{font-size:.65625rem}.text-\[0\.6875rem\]{font-size:.6875rem}.text-\[0\.75rem\]{font-size:.75rem}.text-\[0\.8125rem\]{font-size:.8125rem}.text-\[0\.84375rem\]{font-size:.84375rem}.text-\[0\.875rem\]{font-size:.875rem}.text-\[0\.9375rem\]{font-size:.9375rem}.text-\[1\.1875rem\]{font-size:1.1875rem}.text-\[1\.625rem\]{font-size:1.625rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.font-light{font-weight:300}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.italic{font-style:italic}.not-italic{font-style:normal}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-\[0\.25em\]{letter-spacing:.25em}.tracking-\[0\.2em\]{letter-spacing:.2em}.tracking-\[0\.35em\]{letter-spacing:.35em}.tracking-\[0\.3em\]{letter-spacing:.3em}.tracking-\[0\.45em\]{letter-spacing:.45em}.tracking-\[0\.4em\]{letter-spacing:.4em}.tracking-wide{letter-spacing:.025em}.tracking-widest{letter-spacing:.1em}.text-bordeauxlt{--tw-text-opacity:1;color:rgb(207 107 121/var(--tw-text-opacity,1))}.text-emeraldlt{--tw-text-opacity:1;color:rgb(58 156 132/var(--tw-text-opacity,1))}.text-faint{--tw-text-opacity:1;color:rgb(139 151 163/var(--tw-text-opacity,1))}.text-gold{--tw-text-opacity:1;color:rgb(201 168 106/var(--tw-text-opacity,1))}.text-ice{--tw-text-opacity:1;color:rgb(238 242 244/var(--tw-text-opacity,1))}.text-ice\/60{color:rgba(238,242,244,.6)}.text-ice\/75{color:rgba(238,242,244,.75)}.text-mute{--tw-text-opacity:1;color:rgb(154 166 177/var(--tw-text-opacity,1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.opacity-100{opacity:1}.opacity-65{opacity:.65}.shadow-\[0_-20px_60px_rgba\(0\2c 0\2c 0\2c \.6\)\]{--tw-shadow:0 -20px 60px rgba(0,0,0,.6);--tw-shadow-colored:0 -20px 60px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\[0_-20px_80px_rgba\(0\2c 0\2c 0\2c \.7\)\]{--tw-shadow:0 -20px 80px rgba(0,0,0,.7);--tw-shadow-colored:0 -20px 80px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.ring-2{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-emerald\/30{--tw-ring-color:rgba(31,111,92,.3)}.blur{--tw-blur:blur(8px)}.blur,.drop-shadow-\[0_1px_8px_rgba\(0\2c 0\2c 0\2c \.6\)\]{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.drop-shadow-\[0_1px_8px_rgba\(0\2c 0\2c 0\2c \.6\)\]{--tw-drop-shadow:drop-shadow(0 1px 8px rgba(0,0,0,.6))}.sepia{--tw-sepia:sepia(100%)}.filter,.sepia{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px)}.backdrop-blur-sm,.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.duration-300{transition-duration:.3s}.ease-in{transition-timing-function:cubic-bezier(.4,0,1,1)}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.first\:mt-0:first-child{margin-top:0}.hover\:scale-105:hover{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-bordeaux\/10:hover{background-color:rgba(110,31,43,.1)}.hover\:bg-emerald\/10:hover{background-color:rgba(31,111,92,.1)}.hover\:bg-ice\/5:hover{background-color:rgba(238,242,244,.05)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus-visible\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\:ring-emeraldlt\/70:focus-visible{--tw-ring-color:rgba(58,156,132,.7)}.focus-visible\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.focus-visible\:ring-offset-charcoal:focus-visible{--tw-ring-offset-color:#0c0f12}.active\:scale-90:active{--tw-scale-x:.9;--tw-scale-y:.9}.active\:scale-90:active,.active\:scale-95:active{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95}.active\:scale-\[0\.98\]:active{--tw-scale-x:0.98;--tw-scale-y:0.98;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:text-mute:active{--tw-text-opacity:1;color:rgb(154 166 177/var(--tw-text-opacity,1))}.active\:opacity-100:active{opacity:1}.group[open] .group-open\:rotate-90{--tw-rotate:90deg;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:border-line{--tw-border-opacity:1;border-color:rgb(35 44 54/var(--tw-border-opacity,1))}.group:hover .group-hover\:text-ice{--tw-text-opacity:1;color:rgb(238 242 244/var(--tw-text-opacity,1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width:640px){.sm\:hidden{display:none}.sm\:max-w-lg{max-width:32rem}.sm\:translate-y-6{--tw-translate-y:1.5rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.sm\:items-center{align-items:center}.sm\:rounded-3xl{border-radius:1.5rem}.sm\:rounded-t-3xl{border-top-left-radius:1.5rem;border-top-right-radius:1.5rem}}</style>
+
+  <!-- ===== Alpine.js ===== -->
+  <script defer src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --pin-peripheral:#4a3f30; --pin-focus:#155446; --pin-food:#8c2230; --pin-base:#9a6b27; --map-bg:#e7d8bf;
+    }
+    * { -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    html, body { height: 100%; }
+    body {
+      background: #0c0f12; -webkit-font-smoothing: antialiased;
+      height: 100vh; height: 100dvh;
+      overflow: hidden; overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+
+    #map      { height: 46vh; height: 46dvh; }
+    .veil     { top: 34vh;  top: 34dvh;  height: 11vh; height: 11dvh; }
+    .sheet-wrap { top: 42vh; top: 42dvh; }
+
+    #map { background: var(--map-bg); touch-action: pan-x pan-y; }
+    .leaflet-container { font-family: 'Inter', sans-serif; }
+    .leaflet-control-attribution {
+      background: rgba(247,238,224,.7) !important;
+      color: #7a6748 !important; font-size: 9px !important;
+      backdrop-filter: blur(6px);
+    }
+    .leaflet-control-attribution a { color: #5c4a2e !important; }
+    .leaflet-control-zoom { display: none; }
+
+    .leaflet-tile { filter: sepia(.92) saturate(1.5) hue-rotate(-20deg) brightness(.98) contrast(.97); }
+
+    .pin { position: relative; display:flex; align-items:center; justify-content:center; }
+    .pin-dot {
+      border-radius: 9999px; transition: all .35s cubic-bezier(.4,0,.2,1);
+      border: 1.5px solid rgba(255,250,242,.9); box-shadow: 0 1px 6px rgba(60,40,15,.55);
+    }
+    .pin-peripheral .pin-dot { width: 10px; height: 10px; background: var(--pin-peripheral); }
+    .pin-focus .pin-dot { width: 15px; height: 15px; background: var(--pin-focus); }
+    .pin-focus::after {
+      content:''; position:absolute; width:30px; height:30px; border-radius:9999px;
+      border:1.5px solid rgba(21,84,70,.55);
+    }
+    .pin-food .pin-dot { width: 14px; height: 14px; background: var(--pin-food); }
+    .pin-base .pin-dot { width: 15px; height: 15px; background: var(--pin-base); border-radius: 3px; transform: rotate(45deg); }
+
+    .pin-active .pin-dot { transform: scale(1.7); box-shadow: 0 0 0 5px rgba(21,84,70,.22), 0 3px 12px rgba(60,40,15,.5); }
+    .pin-active.pin-base .pin-dot { transform: rotate(45deg) scale(1.6); }
+    .pin-active::after { width:46px; height:46px; border-color: rgba(21,84,70,.75); }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    .ph-img { background: linear-gradient(135deg,#1a222b 0%,#11161b 100%); }
+    .ph-img img { opacity: 0; transition: opacity .8s ease; }
+    .ph-img img.loaded { opacity: 1; }
+
+    .sheet { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .sheet::-webkit-scrollbar { width: 6px; }
+    .sheet::-webkit-scrollbar-thumb { background: #232c36; border-radius: 9px; }
+    .sheet::-webkit-scrollbar-track { background: transparent; }
+
+    .glass {
+      background: rgba(22,28,35,.72);
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      border: 1px solid rgba(238,242,244,.10);
+    }
+
+    [x-cloak] { display: none !important; }
+
+    .tl-line { background: linear-gradient(to bottom, transparent, #232c36 12%, #232c36 88%, transparent); }
+
+    @media (min-width: 1024px) {
+      .leaflet-control-zoom { display: block; }
+      .leaflet-control-zoom a {
+        background:#161c23 !important; color:#9aa6b1 !important; border-color:#232c36 !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+
+<body x-data="etnaGuide()" x-init="init()" class="font-sans text-ice antialiased overflow-x-hidden">
+
+  <!-- ============================================================= -->
+  <!-- A. MAPA FIXO (metade superior / background)                   -->
+  <!-- ============================================================= -->
+  <header class="fixed top-0 inset-x-0 z-30 pointer-events-none">
+    <div class="px-5 pt-[calc(env(safe-area-inset-top)+1rem)] pb-14
+                bg-gradient-to-b from-charcoal via-charcoal/75 to-transparent">
+      <p class="text-[0.625rem] tracking-[0.45em] text-ice/60 uppercase">Sicília · Planalto Ibleo → Etna</p>
+      <h1 class="font-serif text-2xl text-ice mt-1 leading-none drop-shadow-[0_1px_8px_rgba(0,0,0,.6)]">Etna I</h1>
+      <p class="text-[0.6875rem] text-ice/75 mt-1.5 tracking-wide">Transição vulcânica · 11h00 → 15h30 · 5 pontos nodais</p>
+    </div>
+  </header>
+
+  <div id="map" role="region" aria-label="Mapa da Rota Etna" class="fixed top-0 inset-x-0 z-0"></div>
+
+  <div class="veil fixed inset-x-0 z-10 pointer-events-none
+              bg-gradient-to-b from-transparent to-charcoal"></div>
+
+  <!-- ============================================================= -->
+  <!-- B. TIMELINE — Bottom Sheet fixo, com rolagem interna           -->
+  <!-- ============================================================= -->
+  <main class="sheet-wrap fixed inset-x-0 bottom-0 z-20">
+    <section x-ref="sheet" @scroll.passive="onSheetScroll($event)"
+             class="sheet h-full overflow-y-auto rounded-t-[28px] bg-charcoal border-t border-line/60 shadow-[0_-20px_60px_rgba(0,0,0,.6)]">
+
+      <div class="flex flex-col items-center pt-3 pb-1">
+        <div class="w-10 h-1 rounded-full bg-line"></div>
+      </div>
+
+      <div class="px-6 pt-4 pb-2">
+        <div class="flex items-end justify-between">
+          <div>
+            <p class="text-[0.625rem] tracking-[0.4em] text-bordeauxlt uppercase">Rota Estratégica</p>
+            <h2 class="font-serif text-[1.625rem] leading-tight text-ice mt-1">Em Quatro Atos</h2>
+          </div>
+          <span class="font-serif italic text-faint text-sm pb-1" x-text="activeLabel"></span>
+        </div>
+        <p class="text-[0.8125rem] text-mute mt-3 leading-relaxed font-light max-w-prose">
+          Partindo do <span class="text-ice">Giardino sul Duomo</span>, esta operação lê o território como uma
+          <span class="text-bordeauxlt">transição tectônica em tempo real</span> — cruzando a fronteira invisível
+          entre o Bloco Pelagiano calcário e a Planície de Catânia, para um almoço no
+          <span class="text-bordeauxlt">abismo de lava</span> de Acireale e o pouso no território do
+          <span class="text-gold">Nerello Mascalese</span>, entre as videiras negras das encostas do Etna.
+        </p>
+      </div>
+
+      <div class="relative px-6 pt-6 pb-[calc(11rem+env(safe-area-inset-bottom))]">
+        <div class="tl-line absolute left-[34px] top-0 bottom-32 w-px"></div>
+
+        <template x-for="(ato, ai) in atos" :key="ato.id">
+          <div class="mb-2">
+            <div class="reveal flex items-center gap-3 mb-5 mt-9 first:mt-0" data-reveal>
+              <span class="relative z-10 flex h-5 w-5 items-center justify-center rounded-full
+                           bg-charcoal border border-emerald/70 ml-[15px]">
+                <span class="h-1.5 w-1.5 rounded-full bg-emeraldlt"></span>
+              </span>
+              <div class="ml-2">
+                <p class="text-[0.625rem] tracking-[0.35em] uppercase text-faint" x-text="ato.faixa"></p>
+                <h3 class="font-serif text-lg text-ice leading-tight" x-text="ato.titulo"></h3>
+              </div>
+            </div>
+
+            <template x-for="p in ato.pontos" :key="p.id">
+              <article
+                :data-ponto="p.id"
+                role="button"
+                tabindex="0"
+                :aria-label="p.hora + ' — ' + p.nome"
+                class="reveal relative pl-[52px] mb-4 cursor-pointer group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emeraldlt/70 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
+                data-reveal
+                @click="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)"
+                @keydown.enter.prevent="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)"
+                @keydown.space.prevent="p.tipo==='foco' || p.tipo==='food' || p.tipo==='base' ? openModal(p) : focusPoint(p.id)">
+
+                <span class="absolute left-[30px] top-2.5 -translate-x-1/2 z-10">
+                  <span class="block rounded-full transition-all duration-300"
+                        :class="{
+                          'h-2 w-2 bg-faint': p.tipo==='peripheral',
+                          'h-3 w-3 bg-emeraldlt ring-2 ring-emerald/30': p.tipo==='foco',
+                          'h-3 w-3 bg-bordeauxlt': p.tipo==='food',
+                          'h-3 w-3 bg-gold rotate-45 rounded-sm': p.tipo==='base',
+                          'scale-150': activeId===p.id
+                        }"></span>
+                </span>
+
+                <!-- CARD PERIFÉRICO -->
+                <template x-if="p.tipo==='peripheral'">
+                  <div class="py-2.5 -my-1 min-h-[44px] flex flex-col justify-center transition-opacity active:opacity-100"
+                       :class="activeId===p.id ? 'opacity-100' : 'opacity-65 group-hover:opacity-100'">
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-[0.6875rem] tabular-nums text-faint" x-text="p.hora"></span>
+                      <h4 class="text-[0.875rem] text-mute group-hover:text-ice transition-colors" x-text="p.nome"></h4>
+                    </div>
+                    <p class="text-[0.75rem] text-faint mt-0.5 leading-snug font-light" x-text="p.linha"></p>
+                  </div>
+                </template>
+
+                <!-- CARD DE FOCO / GASTRONOMIA / BASE -->
+                <template x-if="p.tipo!=='peripheral'">
+                  <div class="rounded-2xl overflow-hidden bg-slatecard border transition-all duration-300
+                              group-hover:border-line"
+                       :class="{
+                         'border-emerald/40': p.tipo==='foco' && activeId===p.id,
+                         'border-bordeaux/40': p.tipo==='food' && activeId===p.id,
+                         'border-gold/40': p.tipo==='base' && activeId===p.id,
+                         'border-line/50': activeId!==p.id
+                       }">
+
+                    <div class="ph-img relative h-40 w-full overflow-hidden">
+                      <img :src="p.img" :alt="p.nome" class="h-full w-full object-cover"
+                           @load="$el.classList.add('loaded')" loading="lazy" />
+                      <div class="absolute inset-0 bg-gradient-to-b from-slatecard via-slatecard/10 to-transparent opacity-65"></div>
+                      <div class="absolute top-3 left-3">
+                        <span class="text-[0.5625rem] tracking-[0.3em] uppercase font-medium"
+                              :class="p.tipo==='food' ? 'text-bordeauxlt' : (p.tipo==='base' ? 'text-gold' : 'text-emeraldlt')"
+                              x-text="p.hora"></span>
+                      </div>
+                    </div>
+
+                    <div class="p-4">
+                      <div class="flex items-start justify-between gap-2">
+                        <div>
+                          <p class="text-[0.625rem] tracking-[0.3em] uppercase mb-1"
+                             :class="p.tipo==='food' ? 'text-bordeauxlt' : (p.tipo==='base' ? 'text-gold' : 'text-emeraldlt')"
+                             x-text="p.ato"></p>
+                          <h4 class="font-serif text-[1.1875rem] text-ice leading-tight" x-text="p.nome"></h4>
+                        </div>
+                        <span class="shrink-0 mt-0.5 text-faint group-hover:text-ice transition-colors group-hover:opacity-100 opacity-65">
+                          <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </span>
+                      </div>
+                      <p class="text-[0.8125rem] text-mute mt-2 leading-snug font-light" x-text="p.linha"></p>
+                    </div>
+                  </div>
+                </template>
+              </article>
+            </template>
+          </div>
+        </template>
+
+        <!-- nota de fecho -->
+        <div class="reveal pl-[52px] mt-12 pr-2" data-reveal>
+          <p class="font-serif italic text-mute text-[0.9375rem] leading-relaxed">
+            "A transição está completa. Da pedra calcária branca do Platô Ibleo ao basalto negro das encostas do
+            <span class="text-bordeauxlt not-italic">Etna</span> — você mudou de planeta sem sair da Sicília."
+          </p>
+          <p class="text-[0.6875rem] text-faint mt-6 leading-relaxed font-light border-t border-line/50 pt-5">
+            Operação completa — <span class="text-mute">5 pontos nodais</span> em quatro atos, do check-out calcário
+            à chegada ao território vulcânico. Toque nos pontos de <span class="text-emeraldlt">foco</span> e na
+            <span class="text-bordeauxlt">pausa tática</span> para abrir os detalhes; role para que o mapa siga a jornada.
+          </p>
+
+          <details class="mt-6 border-t border-line/50 pt-5 group">
+            <summary class="text-[0.6875rem] tracking-[0.25em] uppercase text-faint cursor-pointer list-none flex items-center gap-2 active:text-mute">
+              <svg aria-hidden="true" class="w-3.5 h-3.5 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              Créditos das imagens
+            </summary>
+            <p class="text-[0.6875rem] text-faint mt-4 leading-relaxed font-light">
+              Todas as fotografias são reais e de licença livre, via <span class="text-mute">Wikimedia Commons</span>.
+              Cada imagem aponta para o ficheiro de origem; as licenças variam (CC BY / CC BY-SA / domínio público) —
+              consulte a página do ficheiro indicado para a atribuição completa do autor.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-[0.65625rem] text-faint font-light leading-snug">
+              <li>· <span class="text-mute">Ragusa Ibla</span> (ponto de partida) — <span class="italic">Ragusa Ibla, Sicily.jpg</span></li>
+              <li>· <span class="text-mute">Riserva Naturale La Timpa</span> (escarpa de falha) — <span class="italic">La timpa di acireale riserva naturale.jpg</span></li>
+              <li>· <span class="text-mute">Santa Maria la Scala</span> (vila de pescadores) — <span class="italic">Santa Maria la Scala Acireale Sicily.jpg</span></li>
+              <li>· <span class="text-mute">Fronte Lavico del 1992</span> (Zafferana Etnea) — <span class="italic">Etna 1992 lava flow Zafferana.jpg</span></li>
+              <li>· <span class="text-mute">Etna · Vinhedos de Nerello Mascalese</span> (Tenuta San Michele) — <span class="italic">Etna vineyards.jpg</span></li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botão flutuante: voltar ao início da timeline -->
+  <button x-show="sheetScrolled" x-cloak
+          x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+          x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+          @click="scrollSheetTop()" aria-label="Voltar ao início"
+          class="fixed right-4 z-40 h-12 w-12 rounded-full glass flex items-center justify-center text-emeraldlt active:scale-90 transition"
+          style="bottom: calc(1rem + env(safe-area-inset-bottom));">
+    <svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <!-- ============================================================= -->
+  <!-- MODAL — Glassmorphism (sobe de baixo)                         -->
+  <!-- ============================================================= -->
+  <div x-cloak x-show="modal.open" role="dialog" aria-modal="true" :aria-label="modal.p.nome" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div x-show="modal.open"
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         @click="closeModal()"
+         class="absolute inset-0 bg-charcoal/70 backdrop-blur-sm"></div>
+
+    <div x-ref="panel" x-show="modal.open" x-trap.noscroll="modal.open" tabindex="-1"
+         x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-y-full sm:translate-y-6 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+         x-transition:leave="transition ease-in duration-250" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="translate-y-full opacity-0"
+         class="glass relative w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl max-h-[92dvh] overflow-y-auto sheet
+                shadow-[0_-20px_80px_rgba(0,0,0,.7)]">
+
+      <div @touchstart.passive="dragStart($event)" @touchmove.passive="dragMove($event)" @touchend="dragEnd()"
+           class="ph-img relative h-52 w-full overflow-hidden sm:rounded-t-3xl">
+        <div class="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-ice/50 z-20 sm:hidden"></div>
+        <img :src="modal.p.img" :alt="modal.p.nome + ' — ' + modal.p.linha" class="h-full w-full object-cover"
+             @load="$el.classList.add('loaded')" x-effect="modal.open && $el.classList.remove('loaded')" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#161c23] via-transparent to-charcoal/30"></div>
+        <button @click="closeModal()" aria-label="Fechar"
+                class="absolute top-3.5 right-3.5 h-11 w-11 rounded-full glass flex items-center justify-center text-ice active:scale-95 hover:scale-105 transition">
+          <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <div class="absolute bottom-4 left-5 right-5">
+          <p class="text-[0.625rem] tracking-[0.35em] uppercase"
+             :class="modal.p.tipo==='food' ? 'text-bordeauxlt' : (modal.p.tipo==='base' ? 'text-gold' : 'text-emeraldlt')"
+             x-text="modal.p.ato"></p>
+          <h3 class="font-serif text-[1.625rem] text-ice leading-tight mt-1" x-text="modal.p.nome"></h3>
+        </div>
+      </div>
+
+      <div class="px-5 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] space-y-6">
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl bg-ink/60 border border-line/50 p-3">
+            <p class="text-[0.5625rem] tracking-widest uppercase text-faint">Horário ideal</p>
+            <p class="text-[0.8125rem] text-ice mt-1 font-medium" x-text="modal.p.horarioIdeal"></p>
+          </div>
+          <div class="rounded-xl bg-ink/60 border border-line/50 p-3">
+            <p class="text-[0.5625rem] tracking-widest uppercase text-faint">Custo</p>
+            <p class="text-[0.8125rem] text-ice mt-1 font-medium" x-text="modal.p.custo || 'Gratuito'"></p>
+          </div>
+          <div class="rounded-xl bg-ink/60 border border-line/50 p-3">
+            <p class="text-[0.5625rem] tracking-widest uppercase text-faint">Duração</p>
+            <p class="text-[0.8125rem] text-ice mt-1 font-medium" x-text="modal.p.duracao"></p>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-[0.625rem] tracking-[0.3em] uppercase text-emeraldlt mb-2">Descrição</p>
+          <p class="text-[0.875rem] text-mute leading-relaxed font-light" x-text="modal.p.descricao"></p>
+        </div>
+
+        <div class="border-l-2 border-emerald/50 pl-4">
+          <p class="text-[0.625rem] tracking-[0.3em] uppercase text-faint mb-2">Contexto geológico</p>
+          <p class="text-[0.875rem] text-mute leading-relaxed font-light" x-text="modal.p.historia"></p>
+        </div>
+
+        <div>
+          <p class="text-[0.625rem] tracking-[0.3em] uppercase text-gold mb-3">Insights curiosos</p>
+          <ul class="space-y-2.5">
+            <template x-for="ins in modal.p.insights" :key="ins">
+              <li class="flex gap-3 text-[0.84375rem] text-mute leading-relaxed font-light">
+                <span class="text-gold mt-1.5 shrink-0">✦</span>
+                <span x-text="ins"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <div class="flex items-stretch gap-3">
+          <button @click="focusPoint(modal.p.id); closeModal()"
+                  class="flex-1 min-h-[52px] rounded-full py-3.5 text-[0.75rem] tracking-[0.2em] uppercase font-medium transition
+                         border text-ice hover:bg-emerald/10 active:scale-[0.98]"
+                  :class="modal.p.tipo==='food' ? 'border-bordeaux/60 text-bordeauxlt hover:bg-bordeaux/10'
+                                                 : 'border-emerald/60 text-emeraldlt'">
+            Localizar no mapa
+          </button>
+          <a :href="gmapsUrl(modal.p)" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir no Google Maps"
+             class="shrink-0 w-[52px] min-h-[52px] rounded-full border border-line flex items-center justify-center
+                    text-ice hover:bg-ice/5 active:scale-95 transition">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+            </svg>
+          </a>
+        </div>
+        <p class="text-[0.625rem] text-faint text-center -mt-3 tracking-wide">Abrir no Google Maps</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- LÓGICA + BANCO DE DADOS                                        -->
+  <!-- ============================================================= -->
+  <script>
+    /* =========================================================================
+       BANCO DE DADOS — Etna I: A Rota do Rifting e do Fogo
+       (5 pontos nodais, 4 atos · 11h00 → 15h30 · Ragusa → Etna)
+       tipo: 'base' | 'foco' | 'peripheral' | 'food'
+       ========================================================================= */
+    const DB = {
+      centro: [37.20, 14.98],
+      atos: [
+
+        /* ===================== ATO I ===================== */
+        {
+          id: "ato-1",
+          faixa: "11h00 — 12h15",
+          titulo: "Ato I · A Despedida do Platô Ibleo",
+          pontos: [
+            {
+              id: "giardino-duomo-co", tipo: "base", nome: "Giardino sul Duomo",
+              ato: "Ponto de Partida · Check-out", hora: "11h00", coord: [36.92650, 14.74310],
+              linha: "Check-out sem pressa. O carro aponta para o norte — a Sicília vulcânica começa a chamar.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Ragusa%20Ibla,%20Sicily.jpg?width=900",
+              custo: "—", duracao: "—", horarioIdeal: "11h00 — sem correria, deixe o calcário para trás",
+              descricao: "O check-out no Giardino sul Duomo é feito sem pressa — a operação começa oficialmente aqui, quando o carro aponta para o norte em direção à rodovia costeira E45/SS114. Olhe para trás: o esporão calcário de Ragusa Ibla vai encolhendo no espelho retrovisor, último traço do Platô Ibleo.",
+              historia: "Conforme você deixa Ragusa, você cruza a fronteira invisível entre dois mundos geológicos. O Bloco Pelagiano (Platô Ibleo) é uma placa de calcário sedimentar praticamente estática há 100 milhões de anos — a mesma rocha branca e porosa que define Ragusa, Noto e Modica. À medida que o carro avança para norte, essa rocha some. O solo escurece. A Planície de Catânia (Catania Graben) começa: uma depressão tectônica formada pelo afastamento das placas, preenchida com sedimentos e lavas do Etna. É a transição de um mundo para outro.",
+              insights: [
+                "O Bloco Pelagiano é tão estável que os geólogos o chamam de 'a plataforma que o Etna não conseguiu mover'.",
+                "A mudança de solo é visível a olho nu: da pedra calcária branca às terras escuras e ultra-férteis da Planície de Catânia.",
+                "O monstro vulcânico começa a aparecer no horizonte norte antes mesmo de chegar a Catânia — é o maior vulcão ativo da Europa."
+              ]
+            }
+          ]
+        },
+
+        /* ===================== ATO II ===================== */
+        {
+          id: "ato-2",
+          faixa: "12h30 — 14h30",
+          titulo: "Ato II · O Almoço no Abismo de Lava",
+          pontos: [
+            {
+              id: "escarpa-la-timpa", tipo: "foco", nome: "Escarpa de La Timpa",
+              ato: "Ato II · O Abismo de Lava", hora: "12h30", coord: [37.61450, 15.17120],
+              linha: "A falha normal monumental que expõe centenas de camadas de lavas em corte vivo — o arquivo do fogo.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/La_timpa_di_acireale_riserva_naturale.jpg?width=900",
+              custo: "Gratuito", duracao: "20 min", horarioIdeal: "Chegada ~12h30 — antes de descer ao almoço",
+              descricao: "Você chega à região de Acireale e, em vez de ficar no topo, desce a estrada que despenca em direção ao mar através da Riserva Naturale Orientata La Timpa. A Timpa é uma escarpa de falha normal monumental — uma parede vertical que expõe, de forma nua e didática, centenas de camadas sobrepostas de antigas lavas pré-etneanas subaquáticas e subariais. É a parede do tempo vulcânico escancarada.",
+              historia: "A Timpa de Acireale é uma das mais importantes seções geológicas do Mediterrâneo. A escarpa expõe uma sequência estratigráfica de lavas com mais de 500 mil anos — lavas pillow (eruptadas sob o mar) alternadas com lavas subaéreas (eruptadas ao ar). É a leitura direta de como o Etna cresceu: primeiro submerso, depois emerso, construindo a costa por cima do oceano.",
+              insights: [
+                "As 'lavas pillow' em forma de almofada no sopé da escarpa provam que o Etna eruptou debaixo do mar antes de emergir.",
+                "A escarpa tem mais de 200 metros de altura — um corte vertical através de meio milhão de anos de história vulcânica.",
+                "A Riserva protege o único trecho de costa rochosa original desta parte da Sicília, não urbanizada nem alterada."
+              ]
+            },
+            {
+              id: "santa-maria-la-scala", tipo: "food", nome: "Santa Maria la Scala",
+              ato: "Ato II · Almoço Definitivo", hora: "12h45", coord: [37.61280, 15.17410],
+              linha: "A vila de pescadores no fundo da falha — barcos a dez metros da mesa, peixe da manhã, Etna Bianco DOC.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Santa_Maria_la_Scala_Acireale_Sicily.jpg?width=900",
+              custo: "€€ · médio-alto", duracao: "1h30", horarioIdeal: "12h45 — antes do pico de turistas de Taormina",
+              descricao: "No fundo desta falha fica uma minúscula e autêntica vila de pescadores, espremida entre o paredão de rocha e o mar Jônico. O turismo de massa não desce aqui porque os ônibus não passam nas curvas. Sente-se num deck de madeira rústica construído literalmente sobre os blocos de lava negra que entram no mar azul-cobalto. Peça o Crudo di Mare — tartare de atum vermelho, lagostins e camarões vermelhos de Mazara com raspas de limão e azeite vulcânico — ou o Pesce Spada grelhado com alcaparras e tomates locais. O peixe saiu do barco ancorado a dez metros da sua mesa.",
+              historia: "Santa Maria la Scala é o arquétipo da vila de pescadores siciliana que sobreviveu ao turismo de massa por pura geografia: a descida é estreita demais para os ônibus e o acesso impossível para grupos grandes. A Trattoria da Andrea (e similares na orla de pedra) mantêm o modelo original: pescadores vendem o que apanharam de manhã diretamente à cozinha, sem intermediários. Acompanhe com Etna Bianco DOC — predominantemente da casta Carricante, cuja mineralidade salina e cortante nasce das raízes basálticas.",
+              insights: [
+                "O Etna Bianco DOC da casta Carricante é considerado um dos brancos mais minerais da Europa — graças às raízes nas lavas basálticas.",
+                "O 'azeite vulcânico' local vem de oliveiras centenárias plantadas nas lavas solidificadas das encostas de Acireale.",
+                "Simplicidade extrema + qualidade absoluta + impacto visual violento = o auge do luxo silencioso mediterrâneo."
+              ]
+            }
+          ]
+        },
+
+        /* ===================== ATO III ===================== */
+        {
+          id: "ato-3",
+          faixa: "14h45 — 15h30",
+          titulo: "Ato III · A Geopolítica do Magma",
+          pontos: [
+            {
+              id: "fronte-lavico-1992", tipo: "foco", nome: "Il Fronte Lavico del 1992",
+              ato: "Ato III · Zafferana Etnea", hora: "14h45", coord: [37.69120, 15.08450],
+              linha: "A parede de magma que congelou a metros das casas — a guerra tática do homem contra o manto terrestre.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Etna_1992_lava_flow_Zafferana.jpg?width=900",
+              custo: "Gratuito", duracao: "20 min", horarioIdeal: "14h45 — parada cirúrgica antes do check-in",
+              descricao: "Subindo em direção ao hotel, faça uma parada cirúrgica no limite de Zafferana Etnea. Aproxime-se da imensa parede estática de rocha magmática torcida que congelou a poucos metros das casas habitadas durante a erupção de 1992. É a fronteira entre o que sobreviveu e o que foi devorado — fixada para sempre em pedra.",
+              historia: "A erupção de 1992 foi a maior crise vulcânica europeia do século XX. O fluxo de lava avançou durante meses em direção a Zafferana Etnea, ameaçando engolir a cidade. Numa operação sem precedentes, a engenharia militar travou uma guerra tática contra o manto terrestre: cargas explosivas quebraram os túneis de lava (tubos lávicos) e blocos de concreto de 7 toneladas, jogados por helicópteros Chinook dos EUA, desviaram o fluxo principal. A lava parou a menos de 200 metros das primeiras casas. É a história e a geologia fundidas num monumento de destruição interrompida.",
+              insights: [
+                "Os helicópteros Chinook americanos lançaram mais de 200 blocos de concreto de 7 toneladas para construir barreiras improvisadas.",
+                "Os tubos lávicos são 'autopistas' subterrâneas de lava quente que permitem ao fluxo avançar muito mais rápido e longe do que a superfície sugere.",
+                "A operação de 1992 em Zafferana inspirou os planos de emergência vulcânica de todo o mundo — foi a primeira vez que o ser humano conseguiu desviar um fluxo de lava de forma eficaz."
+              ]
+            }
+          ]
+        },
+
+        /* ===================== ATO IV ===================== */
+        {
+          id: "ato-4",
+          faixa: "15h30 em diante",
+          titulo: "Ato IV · O Pouso no Território do Nerello Mascalese",
+          pontos: [
+            {
+              id: "tenuta-san-michele", tipo: "base", nome: "Tenuta San Michele",
+              ato: "Destino · Check-in", hora: "15h30", coord: [37.69810, 15.11180],
+              linha: "A propriedade da família Murgo entre videiras e cinza vulcânica — com vista para as crateras e o mar Jônico.",
+              img: "https://commons.wikimedia.org/wiki/Special:FilePath/Etna_vineyards_nerello_mascalese.jpg?width=900",
+              custo: "—", duracao: "—", horarioIdeal: "15h30 — apertura da janela de check-in, zero estresse",
+              descricao: "Você cruza os portões da propriedade da família Murgo exatamente na abertura da janela de check-in, com zero estresse de relógio. O contraste visual é magnífico: as videiras verdes brilhantes rompem o solo de cinza vulcânica preta e porosa. O ar aqui em cima é mais frio e leve. Descanse na propriedade, caminhe entre os vinhedos com a Mariane e observe a fumaça constante saindo das crateras superiores do Etna de um lado, enquanto o mar Jônico brilha no fundo do vale do outro.",
+              historia: "A Tenuta San Michele (Murgo) está plantada a mais de 600 metros de altitude nas encostas nordeste do Etna, no território do Nerello Mascalese — a casta tinto que os críticos internacionais comparam ao Pinot Noir da Borgonha pela sua elegância e mineralidade. O solo basáltico negro e poroso, rico em minerais vulcânicos, confere ao vinho uma identidade impossível de replicar em qualquer outro lugar do planeta. As videiras antigas (algumas com mais de 100 anos) sobrevivem numa terra que qualquer outra agricultura abandonaria.",
+              insights: [
+                "O Nerello Mascalese nas encostas do Etna ganhou o apelido de 'Pinot Noir do Sul' pelos críticos de vinho — pela elegância e estrutura que a altitude vulcânica confere.",
+                "A altitude de 600m nas encostas do Etna cria uma amplitude térmica (30°C de dia, 15°C à noite) que concentra aromas e prolonga a maturação das uvas.",
+                "O Etna é o único vulcão ativo da Europa com viticultura de altitude — as encostas norte são DOC desde 1968."
+              ]
+            }
+          ]
+        }
+
+      ]
+    };
+
+    /* =========================================================================
+       FUNÇÃO ALPINE — etnaGuide()
+       ========================================================================= */
+    function etnaGuide() {
+      return {
+        atos: DB.atos,
+        map: null,
+        markers: {},
+        activeId: null,
+        activeLabel: '',
+        modal: { open: false, p: {} },
+        _suppressSpy: false,
+        sheetScrolled: false,
+        _dy: 0, _y0: 0, _dragging: false,
+
+        get allPontos() { return this.atos.flatMap(a => a.pontos); },
+
+        prefersReducedMotion() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; },
+
+        init() {
+          this.$nextTick(() => {
+            this.buildMap();
+            this.observeReveals();
+            this.observeSpy();
+          });
+          window.addEventListener('resize', () => this.map && this.map.invalidateSize());
+          window.addEventListener('orientationchange', () =>
+            setTimeout(() => this.map && this.map.invalidateSize(), 300));
+        },
+
+        onSheetScroll(e) { this.sheetScrolled = e.target.scrollTop > 480; },
+        scrollSheetTop() { this.$refs.sheet.scrollTo({ top: 0, behavior: 'smooth' }); },
+
+        dragStart(e) {
+          if (this.$refs.panel.scrollTop > 0) return;
+          this._y0 = e.touches[0].clientY; this._dy = 0; this._dragging = true;
+          this.$refs.panel.style.transition = 'none';
+        },
+        dragMove(e) {
+          if (!this._dragging) return;
+          this._dy = Math.max(0, e.touches[0].clientY - this._y0);
+          this.$refs.panel.style.transform = `translateY(${this._dy}px)`;
+        },
+        dragEnd() {
+          if (!this._dragging) return;
+          this._dragging = false;
+          const p = this.$refs.panel;
+          p.style.transition = 'transform .28s cubic-bezier(.2,.7,.2,1)';
+          if (this._dy > 110) {
+            p.style.transform = 'translateY(100%)';
+            setTimeout(() => { this.closeModal(); p.style.transform = ''; p.style.transition = ''; }, 240);
+          } else {
+            p.style.transform = '';
+          }
+          this._dy = 0;
+        },
+
+        buildMap() {
+          const start = () => {
+            this.map = L.map('map', {
+              center: DB.centro, zoom: 10, zoomControl: true,
+              attributionControl: true, scrollWheelZoom: false,
+              touchZoom: true, doubleClickZoom: true, tapTolerance: 18, bounceAtZoomLimits: false
+            });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+              attribution: '© OpenStreetMap · © CARTO', maxZoom: 20, subdomains: 'abcd'
+            }).addTo(this.map);
+
+            this.allPontos.forEach(p => {
+              const cls = `pin pin-${p.tipo}`;
+              const icon = L.divIcon({
+                className: '', html: `<div class="${cls}" data-pin="${p.id}"><span class="pin-dot"></span></div>`,
+                iconSize: [34, 34], iconAnchor: [17, 17]
+              });
+              const m = L.marker(p.coord, { icon }).addTo(this.map);
+              m.on('click', () => {
+                (p.tipo === 'peripheral') ? this.scrollToPoint(p.id) : this.openModal(p);
+              });
+              this.markers[p.id] = m;
+            });
+
+            // linha de rota conectando os pontos
+            const coords = this.allPontos.map(p => p.coord);
+            L.polyline(coords, {
+              color: 'rgba(201,168,106,0.45)',
+              weight: 2,
+              dashArray: '6, 8'
+            }).addTo(this.map);
+
+            const group = L.featureGroup(Object.values(this.markers));
+            const bounds = group.getBounds().pad(0.18);
+            let fitted = false;
+            const tryFit = () => {
+              if (fitted || !this.map) return;
+              const s = this.map.getSize();
+              if (s.x < 2 || s.y < 2) return false;
+              this.map.invalidateSize();
+              this.map.fitBounds(bounds, { maxZoom: 13, animate: !this.prefersReducedMotion() });
+              fitted = true;
+              return true;
+            };
+            if (!tryFit() && 'ResizeObserver' in window) {
+              const ro = new ResizeObserver(() => { if (tryFit()) ro.disconnect(); });
+              ro.observe(document.getElementById('map'));
+            }
+            [120, 400, 900].forEach(t => setTimeout(tryFit, t));
+
+            this.setActive(this.allPontos[0].id, false);
+          };
+          if (window.L) start(); else window.addEventListener('load', start, { once: true });
+        },
+
+        focusPoint(id, fly = true) {
+          const p = this.allPontos.find(x => x.id === id);
+          if (!p || !this.map) return;
+          this.setActive(id, false);
+          if (fly) {
+            const zoom = (p.tipo === 'foco' || p.tipo === 'base' || p.tipo === 'food') ? 15 : 13;
+            this.prefersReducedMotion() ? this.map.setView(p.coord, zoom, { animate: false }) : this.map.flyTo(p.coord, zoom, { duration: 1.4, easeLinearity: 0.25 });
+          }
+        },
+
+        setActive(id, fly = true) {
+          if (this.activeId === id) { if (fly) this._flyOnly(id); return; }
+          if (this.activeId && this.markers[this.activeId]) {
+            const el = this.markers[this.activeId].getElement()?.querySelector('.pin');
+            el && el.classList.remove('pin-active');
+          }
+          this.activeId = id;
+          const p = this.allPontos.find(x => x.id === id);
+          if (p) this.activeLabel = p.hora;
+          const cur = this.markers[id]?.getElement()?.querySelector('.pin');
+          cur && cur.classList.add('pin-active');
+          if (fly) this._flyOnly(id);
+        },
+        _flyOnly(id) {
+          const p = this.allPontos.find(x => x.id === id);
+          if (!p || !this.map) return;
+          const zoom = (p.tipo === 'peripheral') ? 13 : 15;
+          this.prefersReducedMotion() ? this.map.setView(p.coord, zoom, { animate: false }) : this.map.flyTo(p.coord, zoom, { duration: 1.4, easeLinearity: 0.25 });
+        },
+
+        observeSpy() {
+          const opts = { root: this.$refs.sheet, rootMargin: '-42% 0px -45% 0px', threshold: 0 };
+          const io = new IntersectionObserver((entries) => {
+            if (this._suppressSpy) return;
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                const id = e.target.getAttribute('data-ponto');
+                if (id && id !== this.activeId) this.setActive(id, true);
+              }
+            });
+          }, opts);
+          document.querySelectorAll('[data-ponto]').forEach(el => io.observe(el));
+        },
+
+        observeReveals() {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+          }, { root: this.$refs.sheet, threshold: 0.12 });
+          document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+        },
+
+        scrollToPoint(id) {
+          const el = document.querySelector(`[data-ponto="${id}"]`);
+          if (!el) return;
+          this._suppressSpy = true;
+          this.setActive(id, true);
+          el.scrollIntoView({ behavior: this.prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+          setTimeout(() => { this._suppressSpy = false; }, 900);
+        },
+
+        openModal(p) {
+          this.modal.p = p; this.modal.open = true;
+          if (this.$refs.sheet) this.$refs.sheet.style.overflow = 'hidden';
+          this.focusPoint(p.id);
+        },
+        closeModal() {
+          this.modal.open = false;
+          if (this.$refs.sheet) this.$refs.sheet.style.overflow = '';
+        },
+
+        gmapsUrl(p) {
+          if (!p || !p.coord) return 'https://www.google.com/maps';
+          const [lat, lng] = p.coord;
+          return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+        }
+      };
+    }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const root = document.querySelector('[x-data]');
+        root && root._x_dataStack && root._x_dataStack[0].closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
