@@ -20,14 +20,23 @@ HTML5 · Tailwind CSS (CDN) · Alpine.js · Leaflet — tudo em um único arquiv
 
 Segundo guia no mesmo padrão, em `ragusa.html`: uma operação de um dia por **Ragusa Ibla** e **Ragusa Superiore** (Val di Noto), lida como uma falha tectônica aberta pelo terramoto de 1693. **9 pontos nodais** em 5 atos (09h00 → pôr do sol), partindo e regressando ao *Giardino sul Duomo*. Mesma stack e interações do guia de Ortigia.
 
+## Modica · A Cidade dos Dois Rios
+
+Terceiro guia, em `modica.html`: uma **jornada essencial de meio-dia** (10h30 → 15h00, chegando de carro) pela cidade-desfiladeiro do Val di Noto. Arco geológico e gastronômico em 5 atos — dos dois rios enterrados sob o **Corso Umberto I**, pela escadaria dos Apóstolos da **San Pietro** e o chocolate frio asteca da **Antica Dolceria Bonajuto**, subindo os 250 degraus do **Duomo di San Giorgio** (com a linha meridiana ao meio-dia) e o **Sabadì**, até o anfiteatro de pedra do **Belvedere del Pizzo** e o ponto mais alto em **San Giovanni Evangelista** — encerrando à mesa do **Fattoria delle Torri**, no pátio de limoeiros. **10 paragens.** Mesma stack e interações.
+
+## Navegação por abas
+
+As três cidades estão ligadas por uma **barra de abas** no cabeçalho de cada guia (Ortigia · Ragusa · Modica), permitindo alternar entre elas como abas de um mesmo site.
+
 ## Rodar localmente
 
-Basta abrir `index.html` (Ortigia) ou `ragusa.html` (Ragusa) no navegador, ou servir a pasta:
+Basta abrir `index.html` (Ortigia), `ragusa.html` (Ragusa) ou `modica.html` (Modica) no navegador, ou servir a pasta:
 
 ```bash
 npx serve .
 # Ortigia → http://localhost:3000/
 # Ragusa  → http://localhost:3000/ragusa
+# Modica  → http://localhost:3000/modica
 ```
 
 ## Créditos das imagens
